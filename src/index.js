@@ -19,54 +19,6 @@ const softSPI = new SoftSPI({
 // I believe that channing pattern is better for configuring pins which are optional methods to use.
 const mfrc522 = new Mfrc522(softSPI).setResetPin(22).setBuzzerPin(18);
 
-setInterval(function() {
-  //# reset card
-  mfrc522.reset();
-
-  //# Scan for cards
-  let response = mfrc522.findCard();
-  if (!response.status) {
-    console.log("No Card");
-    return;
-  }
-  console.log("Card detected, CardType: " + response.bitSize);
-
-  //# Get the UID of the card
-  response = mfrc522.getUid();
-  if (!response.status) {
-    console.log("UID Scan Error");
-    return;
-  }
-  //# If we have the UID, continue
-  const uid = response.data;
-  console.log(
-    "Card read UID: %s %s %s %s",
-    uid[0].toString(16),
-    uid[1].toString(16),
-    uid[2].toString(16),
-    uid[3].toString(16)
-  );
-
-  //# Select the scanned card
-  const memoryCapacity = mfrc522.selectCard(uid);
-  console.log("Card Memory Capacity: " + memoryCapacity);
-
-  //# This is the default key for authentication
-  const key = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
-
-  //# Authenticate on Block 8 with key and uid
-  if (!mfrc522.authenticate(8, key, uid)) {
-    console.log("Authentication Error");
-    return;
-  }
-
-  //# Dump Block 8
-  console.log("Block: 8 Data: " + mfrc522.getDataForBlock(8));
-
-  //# Stop
-  mfrc522.stopCrypto();
-}, 500);
-
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
@@ -94,6 +46,67 @@ app.on('ready', () => {
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.webContents.send('store-data', 'stores');
+    setInterval(function() {
+      //# reset card
+      mfrc522.reset();
+
+      //# Scan for cards
+      let response = mfrc522.findCard();
+      if (!response.status) {
+        mainWindow.webContents.send('store-data', 'No Card');
+        console.log("No Card");
+        return;
+      }
+      mainWindow.webContents.send('store-data', 'Card detected, CardType: ' + response.bitSize);
+      console.log("Card detected, CardType: " + response.bitSize);
+
+      //# Get the UID of the card
+      response = mfrc522.getUid();
+      if (!response.status) {
+        console.log("UID Scan Error");
+        mainWindow.webContents.send('store-data', 'UID Scan Error');
+        return;
+      }
+      //# If we have the UID, continue
+      const uid = response.data;
+      mainWindow.webContents.send('store-data', uid[0].toString(16));
+      mainWindow.webContents.send('store-data', uid[1].toString(16));
+      mainWindow.webContents.send('store-data', uid[2].toString(16));
+      mainWindow.webContents.send('store-data', uid[3].toString(16));
+      console.log(
+        "Card read UID: %s %s %s %s",
+        uid[0].toString(16),
+        uid[1].toString(16),
+        uid[2].toString(16),
+        uid[3].toString(16)
+      );
+
+      //# Select the scanned card
+      const memoryCapacity = mfrc522.selectCard(uid);
+      mainWindow.webContents.send('store-data', "Card Memory Capacity: " + memoryCapacity);
+      console.log("Card Memory Capacity: " + memoryCapacity);
+
+      //# This is the default key for authentication
+      const key = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
+
+      //# Authenticate on Block 8 with key and uid
+      if (!mfrc522.authenticate(8, key, uid)) {
+        console.log("Authentication Error");
+        mainWindow.webContents.send('store-data', "Authentication Error");
+        return;
+      }
+
+      //# Dump Block 8
+      console.log("Block: 8 Data: " + mfrc522.getDataForBlock(8));
+      mainWindow.webContents.send('store-data', "Block: 8 Data: " + mfrc522.getDataForBlock(8));
+      mainWindow.webContents.send('store-data', "Block: 1 Data: " + mfrc522.getDataForBlock(1));
+      mainWindow.webContents.send('store-data', "Block: 2 Data: " + mfrc522.getDataForBlock(2));
+      mainWindow.webContents.send('store-data', "Block: 3 Data: " + mfrc522.getDataForBlock(3));
+      mainWindow.webContents.send('store-data', "Block: 4 Data: " + mfrc522.getDataForBlock(4));
+
+      //# Stop
+      mfrc522.stopCrypto();
+    }, 500);
   })
 })
 
