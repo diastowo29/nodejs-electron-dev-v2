@@ -95,9 +95,29 @@ app.on('ready', () => {
         mainWindow.webContents.send('store-data', "Authentication Error");
         return;
       }
+      if (!mfrc522.authenticate(1, key, uid)) {
+        console.log("Authentication Error");
+        mainWindow.webContents.send('store-data', "Authentication Error");
+        return;
+      }
+      if (!mfrc522.authenticate(2, key, uid)) {
+        console.log("Authentication Error");
+        mainWindow.webContents.send('store-data', "Authentication Error");
+        return;
+      }
+      if (!mfrc522.authenticate(3, key, uid)) {
+        console.log("Authentication Error");
+        mainWindow.webContents.send('store-data', "Authentication Error");
+        return;
+      }
+      if (!mfrc522.authenticate(4, key, uid)) {
+        console.log("Authentication Error");
+        mainWindow.webContents.send('store-data', "Authentication Error");
+        return;
+      }
 
       //# Dump Block 8
-      // console.log("Block: 8 Data: " + mfrc522.getDataForBlock(8));
+      console.log("Block: 8 Data: " + mfrc522.getDataForBlock(8));
       console.log("Block: 1 Data: " + mfrc522.getDataForBlock(1));
       mainWindow.webContents.send('store-data', "Block: 8 Data: " + mfrc522.getDataForBlock(8));
       mainWindow.webContents.send('store-data', "Block: 1 Data: " + mfrc522.getDataForBlock(1));
