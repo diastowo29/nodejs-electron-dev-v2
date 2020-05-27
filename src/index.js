@@ -97,7 +97,7 @@ app.on('ready', () => {
       }
 
       //# Dump Block 8
-      console.log("Block: 8 Data: " + mfrc522.getDataForBlock(8));
+      // console.log("Block: 8 Data: " + mfrc522.getDataForBlock(8));
       console.log("Block: 1 Data: " + mfrc522.getDataForBlock(1));
       mainWindow.webContents.send('store-data', "Block: 8 Data: " + mfrc522.getDataForBlock(8));
       mainWindow.webContents.send('store-data', "Block: 1 Data: " + mfrc522.getDataForBlock(1));
