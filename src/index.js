@@ -89,48 +89,20 @@ app.on('ready', () => {
       //# This is the default key for authentication
       const key = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
 
-      var blockIndex1 = 1;
-      var blockIndex2 = 2;
-      var blockIndex3 = 3;
-      var blockIndex4 = 4;
+      var blockIndexes = [0, 1, 2, 3, 4];
 
-      //# Authenticate on Block 8 with key and uid
-      if (!mfrc522.authenticate(blockIndex1, key, uid)) {
-        console.log("Authentication Error");
-        mainWindow.webContents.send('store-data', "Authentication Error");
-        return;
+      for (var i=0; i<blockIndexes.length; i++) {
+        if (!mfrc522.authenticate(blockIndexes[i], key, uid)) {
+          console.log("Authentication Error");
+          mainWindow.webContents.send('store-data', "Authentication Error");
+          return;
+        }
+
+        console.log("Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i]));
+        mainWindow.webContents.send('store-data', "Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i]));
+
       }
 
-      console.log("Block: " + blockIndex1 + " Data: " + mfrc522.getDataForBlock(blockIndex1));
-      mainWindow.webContents.send('store-data', "Block: " + blockIndex1 + " Data: " + mfrc522.getDataForBlock(blockIndex1));
-
-      if (!mfrc522.authenticate(blockIndex2, key, uid)) {
-        console.log("Authentication Error");
-        mainWindow.webContents.send('store-data', "Authentication Error");
-        return;
-      }
-
-      console.log("Block: " + blockIndex2 + " Data: " + mfrc522.getDataForBlock(blockIndex2));
-      mainWindow.webContents.send('store-data', "Block: " + blockIndex2 + " Data: " + mfrc522.getDataForBlock(blockIndex2));
-
-
-      if (!mfrc522.authenticate(blockIndex3, key, uid)) {
-        console.log("Authentication Error");
-        mainWindow.webContents.send('store-data', "Authentication Error");
-        return;
-      }
-
-      console.log("Block: " + blockIndex3 + " Data: " + mfrc522.getDataForBlock(blockIndex3));
-      mainWindow.webContents.send('store-data', "Block: " + blockIndex3 + " Data: " + mfrc522.getDataForBlock(blockIndex3));
-
-      if (!mfrc522.authenticate(blockIndex4, key, uid)) {
-        console.log("Authentication Error");
-        mainWindow.webContents.send('store-data', "Authentication Error");
-        return;
-      }
-
-      console.log("Block: " + blockIndex4 + " Data: " + mfrc522.getDataForBlock(blockIndex4));
-      mainWindow.webContents.send('store-data', "Block: " + blockIndex4 + " Data: " + mfrc522.getDataForBlock(blockIndex4));
       //# Stop
       mfrc522.stopCrypto();
     }, 500);
