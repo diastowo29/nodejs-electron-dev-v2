@@ -89,7 +89,7 @@ app.on('ready', () => {
       //# This is the default key for authentication
       const key = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
 
-      var blockIndexes = [0, 1, 2, 3, 4];
+      var blockIndexes = [8, 9, 10, 11, 12];
 
       for (var i=0; i<blockIndexes.length; i++) {
         if (!mfrc522.authenticate(blockIndexes[i], key, uid)) {
