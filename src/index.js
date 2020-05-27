@@ -103,6 +103,9 @@ app.on('ready', () => {
       mainWindow.webContents.send('store-data', "Block: 2 Data: " + mfrc522.getDataForBlock(2));
       mainWindow.webContents.send('store-data', "Block: 3 Data: " + mfrc522.getDataForBlock(3));
       mainWindow.webContents.send('store-data', "Block: 4 Data: " + mfrc522.getDataForBlock(4));
+      mainWindow.webContents.send('store-data', "Block: 5 Data: " + mfrc522.getDataForBlock(4));
+      mainWindow.webContents.send('store-data', "Block: 6 Data: " + mfrc522.getDataForBlock(4));
+      mainWindow.webContents.send('store-data', "Block: 7 Data: " + mfrc522.getDataForBlock(4));
 
       //# Stop
       mfrc522.stopCrypto();
