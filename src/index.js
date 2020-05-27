@@ -89,25 +89,17 @@ app.on('ready', () => {
       //# This is the default key for authentication
       const key = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
 
+      var blockIndex = 2;
+
       //# Authenticate on Block 8 with key and uid
-      if (!mfrc522.authenticate(1, key, uid)) {
+      if (!mfrc522.authenticate(blockIndex, key, uid)) {
         console.log("Authentication Error");
         mainWindow.webContents.send('store-data', "Authentication Error");
         return;
       }
-
-      //# Dump Block 8
-      // console.log("Block: 8 Data: " + mfrc522.getDataForBlock(8));
-      console.log("Block: 1 Data: " + mfrc522.getDataForBlock(1));
-      mainWindow.webContents.send('store-data', "Block: 8 Data: " + mfrc522.getDataForBlock(8));
-      mainWindow.webContents.send('store-data', "Block: 1 Data: " + mfrc522.getDataForBlock(1));
-      mainWindow.webContents.send('store-data', "Block: 2 Data: " + mfrc522.getDataForBlock(2));
-      mainWindow.webContents.send('store-data', "Block: 3 Data: " + mfrc522.getDataForBlock(3));
-      mainWindow.webContents.send('store-data', "Block: 4 Data: " + mfrc522.getDataForBlock(4));
-      mainWindow.webContents.send('store-data', "Block: 5 Data: " + mfrc522.getDataForBlock(4));
-      mainWindow.webContents.send('store-data', "Block: 6 Data: " + mfrc522.getDataForBlock(4));
-      mainWindow.webContents.send('store-data', "Block: 7 Data: " + mfrc522.getDataForBlock(4));
-
+      
+      console.log("Block: 1 Data: " + mfrc522.getDataForBlock(blockIndex));
+      mainWindow.webContents.send('store-data', "Block: " + blockIndex + " Data: " + mfrc522.getDataForBlock(blockIndex));
       //# Stop
       mfrc522.stopCrypto();
     }, 500);
