@@ -12,12 +12,16 @@ const blinkLed = _ => {
   }
 
   stepperEnable.read((err, value) => { // Asynchronous read
+  	console.log('stepperEnable.read' + value)
     if (err) {
-      throw err;
+    	console.log(err)
+    	throw err;
     }
 
     stepperEnable.write(value ^ 1, err => { // Asynchronous write
+    	console.log('stepperEnable.write')
       if (err) {
+      	console.log(err)
         throw err;
       }
     });
