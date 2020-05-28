@@ -16,7 +16,7 @@
     	<div id="userdiv">
     		<p id="userKuota">Sisa kuota beras anda: 0 Kg</p>
     	</div>
-    	<!-- <div id="admindiv">
+    	<div id="admindiv">
 		  <div class="row">
 		    <div class="col-md-12">
 		      <h3>Subsidi Beras</h3>
@@ -37,8 +37,7 @@
 		    	<button style="width: 100%;" class="btn btn-success" onclick="saveSubsidi()">Simpan</button>
 		    </div>
 		  </div>
-    	</div> -->
-    	
+    	</div>
 	</div>
   </body>
   <script type="text/javascript">
@@ -47,8 +46,23 @@
 
 	var ipcRenderer = require('electron').ipcRenderer;
 	ipcRenderer.on('store-data', function (event,store) {
-		console.log(store)
-	    $('#userKuota').text('Sisa kuota beras anda: ' + store + ' Kg')
+	    $('#userKuota').text('Sisa kuota beras anda: ' + parseInt(store) + ' Kg')
+	});
+
+	ipcRenderer.on('admin-data', function (event,store) {
+		$('#berasKuota').text(store)
+		berasCount = parseInt($('#berasKuota').text());
+	});
+
+	ipcRenderer.on('role-data', function (event,store) {
+		$('#berasKuota').text(store)
+		if (store == 'admin') {
+			$('#admindiv').show()
+			$('#userdiv').hide()
+		} else {
+			$('#admindiv').hide()
+			$('#userdiv').show()
+		}
 	});
 
 	function minusClick () {
@@ -64,7 +78,8 @@
 	}
 
 	function saveSubsidi () {
-		
+		console.log($('#berasKuota').text())
+		ipcRenderer.send('kuota', $('#berasKuota').text());
 	}
 
   </script>

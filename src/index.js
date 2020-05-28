@@ -2,11 +2,22 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const Mfrc522 = require("mfrc522-rpi");
 const SoftSPI = require("rpi-softspi");
+const Store = require('./store.js');
+const ipcMain = require('electron').ipcMain;
 
 //# This loop keeps checking for chips. If one is near it will get the UID and authenticate
 console.log("scanning...");
 console.log("Please put chip or keycard in the antenna inductive zone!");
 console.log("Press Ctrl-C to stop.");
+
+const store = new Store({
+  // We'll call our data file 'user-preferences'
+  configName: 'user-preferences',
+  defaults: {
+    // 800x600 is the default size of our window
+    windowBounds: { beras: 2 }
+  }
+});
 
 const softSPI = new SoftSPI({
   clock: 23, // pin number of SCLK
@@ -33,8 +44,12 @@ app.on('ready', () => {
     height: 600,
     webPreferences: {nodeIntegration: true}
   });
+
+  let { beras } = store.get('windowBounds');
+  console.log(beras)
+
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -45,7 +60,7 @@ app.on('ready', () => {
   })
 
   mainWindow.webContents.on('did-finish-load', () => {
-    // mainWindow.webContents.send('store-data', 'stores');
+    mainWindow.webContents.send('admin-data', beras);
     setInterval(function() {
       //# reset card
       mfrc522.reset();
@@ -123,21 +138,7 @@ app.on('ready', () => {
 
             let data = [
               52,
-              53,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
+              53
             ];
 
             mfrc522.writeDataToBlock(4, data)
@@ -159,4 +160,8 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
+});
+
+ipcMain.on('kuota', function(event, data) {
+      store.set('windowBounds', { beras: data });
 });
