@@ -112,7 +112,16 @@ app.on('ready', () => {
 
         if (blockIndexes[i] == 4) {
           if (!isAdmin) {
-            mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8')); 
+            mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
+            var buf = Buffer.from('45', 'utf8');
+
+            var newData = [];
+
+            for (var i=0; i<buf.length; i++) {
+              newData.push(buf[i])
+            }
+
+            mfrc522.writeDataToBlock(blockIndexes[i], newData)
           }
         }
 
