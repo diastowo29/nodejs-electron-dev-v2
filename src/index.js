@@ -120,9 +120,11 @@ app.on('ready', () => {
 
         if (blockIndexes[i] == 1) {
           if (bufferOriginal.toString('utf8') == "admn") {
+            console.log('this is admin')
             isAdmin = true
             mainWindow.webContents.send('role-data', "admin");
           } else {
+            console.log('this is not admin')
             isAdmin = false
           }
         }
