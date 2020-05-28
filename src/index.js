@@ -146,6 +146,17 @@ app.on('ready', () => {
               53
             ];
 
+            /*if(bufferOriginal => jatahkuota){
+              digitalWrite(gpio26, HIGH);
+              digitalWrite(gpio19, HIGH);
+              for(int i=0, i<(jatahkuota*1600)){
+                digitalWrite(gpio13, HIGH);
+                delay(2);
+                digitalWrite(gpio13, LOW);
+                delay(2);
+              }
+            }*/
+
             mfrc522.writeDataToBlock(4, data)
           }
         }
