@@ -121,7 +121,27 @@ app.on('ready', () => {
               newData.push(buf[i])
             }
 
-            mfrc522.writeDataToBlock(blockIndexes[i], newData)
+            let data = [
+              52,
+              53,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff,
+              0xff
+            ];
+
+            mfrc522.writeDataToBlock(blockIndexes[i], data)
           }
         }
 
