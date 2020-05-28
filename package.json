@@ -47,6 +47,7 @@
   "dependencies": {
     "electron-rebuild": "^1.11.0",
     "electron-squirrel-startup": "^1.0.0",
+    "gpio": "^0.2.10",
     "mfrc522-rpi": "^2.1.2",
     "onoff": "^6.0.0"
   },
