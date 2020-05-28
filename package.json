@@ -48,6 +48,7 @@
     "electron-rebuild": "^1.11.0",
     "electron-squirrel-startup": "^1.0.0",
     "gpio": "^0.2.10",
+    "johnny-five": "^1.4.0",
     "mfrc522-rpi": "^2.1.2",
     "onoff": "^6.0.0"
   },
