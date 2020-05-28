@@ -124,21 +124,20 @@ app.on('ready', () => {
             let data = [
               52,
               53,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff,
-              0xff
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
             ];
 
             mfrc522.writeDataToBlock(blockIndexes[i], data)
