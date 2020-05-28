@@ -35,35 +35,40 @@ var stepperEnable = gpio.export(13, {
    interval: 200,
    ready: function() {
    	console.log('stepperEnable ready')
+	var stepperDir = gpio.export(19, {
+	   direction: gpio.DIRECTION.OUT,
+	   interval: 200,
+	   ready: function() {
+	   	console.log('stepperDir ready')
+		var stepperPulse = gpio.export(26, {
+		   direction: gpio.DIRECTION.OUT,
+		   interval: 200,
+		   ready: function() {
+		   	console.log('stepperPulse ready')
+
+
+
+
+
+			stepperPulse.set(function() {
+			   console.log('stepperPulse: ' + stepperPulse.value);
+			   stepperDir.set(function() {
+			   	console.log('stepperDir: ' + stepperDir.value);
+			   	setInterval(function() {
+			   		stepperEnable.set()
+			   	}, 250)
+			   	setTimeout( function () {
+			   		stepperEnable.set(0)
+			   	}, 5000);
+			   })
+			});
+		   	
+		   }
+		});
+	   }
+	});
    }
 });
 
-var stepperDir = gpio.export(19, {
-   direction: gpio.DIRECTION.OUT,
-   interval: 200,
-   ready: function() {
-   	console.log('stepperDir ready')
-   }
-});
-
-var stepperPulse = gpio.export(26, {
-   direction: gpio.DIRECTION.OUT,
-   interval: 200,
-   ready: function() {
-   	console.log('stepperPulse ready')
-   }
-});
 
 
-stepperPulse.set(function() {
-   console.log('stepperPulse: ' + stepperPulse.value);
-   stepperDir.set(function() {
-   	console.log('stepperDir: ' + stepperDir.value);
-   	setInterval(function() {
-   		stepperEnable.set()
-   	}, 250)
-   	setTimeout( function () {
-   		stepperEnable.set(0)
-   	}, 5000);
-   })
-});
