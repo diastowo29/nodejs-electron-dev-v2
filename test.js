@@ -6,12 +6,28 @@ var stepperPulse = new Gpio(26, 'out');
 
 let stopBlinking = false;
 
-stepperEnable.write(1, err => { // Asynchronous write
-	console.log('stepperEnable.write')
+stepperDir.write(1, err => { // Asynchronous write
+	console.log('stepperDir.write')
 	if (err) {
 		console.log(err)
 		throw err;
 	}
+	stepperPulse.write(1, err => { // Asynchronous write
+		console.log('stepperPulse.write')
+		if (err) {
+			console.log(err)
+			throw err;
+		}
+		for (var i=0; i<1600; i++) {
+			stepperEnable.write(1, err => { // Asynchronous write
+				console.log('stepperPulse.write')
+				if (err) {
+					console.log(err)
+					throw err;
+				}
+			});
+		}
+	});
 });
 // const blinkLed = _ => {
 //   if (stopBlinking) {
