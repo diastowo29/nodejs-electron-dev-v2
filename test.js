@@ -6,12 +6,12 @@ var stepperPulse = new Gpio(26, 'out');
 
 let stopBlinking = false;
 
-stepperEnable.writeSync(1);
-
-process.on('SIGINT', _ => {
-  stepperEnable.unexport();
-});
-
+stepperDir.writeSync(1);
+stepperPulse.writeSync(1);
+for (var i=0; i<1600; i++) {
+	setTimeout(stepperEnable.writeSync(1), 5000);
+	setTimeout(stepperEnable.writeSync(0), 5000);
+}
 
 
 // const blinkLed = _ => {
