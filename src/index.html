@@ -14,7 +14,7 @@
     <p>Silahkan tempelkan Kartu anda.</p>
     <div class="container">
     	<div id="userdiv">
-    		<p>Sisa kuota beras anda: 0 Kg</p>
+    		<p id="userKuota">Sisa kuota beras anda: 0 Kg</p>
     	</div>
     	<!-- <div id="admindiv">
 		  <div class="row">
@@ -47,7 +47,8 @@
 
 	var ipcRenderer = require('electron').ipcRenderer;
 	ipcRenderer.on('store-data', function (event,store) {
-	    console.log(store);
+		console.log(store)
+	    $('#userKuota').text(store)
 	});
 
 	function minusClick () {

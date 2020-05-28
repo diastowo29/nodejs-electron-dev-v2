@@ -45,7 +45,7 @@ app.on('ready', () => {
   })
 
   mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('store-data', 'stores');
+    // mainWindow.webContents.send('store-data', 'stores');
     setInterval(function() {
       //# reset card
       mfrc522.reset();
@@ -53,26 +53,26 @@ app.on('ready', () => {
       //# Scan for cards
       let response = mfrc522.findCard();
       if (!response.status) {
-        mainWindow.webContents.send('store-data', 'No Card');
+        // mainWindow.webContents.send('store-data', 'No Card');
         console.log("No Card");
         return;
       }
-      mainWindow.webContents.send('store-data', 'Card detected, CardType: ' + response.bitSize);
+      // mainWindow.webContents.send('store-data', 'Card detected, CardType: ' + response.bitSize);
       console.log("Card detected, CardType: " + response.bitSize);
 
       //# Get the UID of the card
       response = mfrc522.getUid();
       if (!response.status) {
         console.log("UID Scan Error");
-        mainWindow.webContents.send('store-data', 'UID Scan Error');
+        // mainWindow.webContents.send('store-data', 'UID Scan Error');
         return;
       }
       //# If we have the UID, continue
       const uid = response.data;
-      mainWindow.webContents.send('store-data', uid[0].toString(16));
-      mainWindow.webContents.send('store-data', uid[1].toString(16));
-      mainWindow.webContents.send('store-data', uid[2].toString(16));
-      mainWindow.webContents.send('store-data', uid[3].toString(16));
+      // mainWindow.webContents.send('store-data', uid[0].toString(16));
+      // mainWindow.webContents.send('store-data', uid[1].toString(16));
+      // mainWindow.webContents.send('store-data', uid[2].toString(16));
+      // mainWindow.webContents.send('store-data', uid[3].toString(16));
       console.log(
         "Card read UID: %s %s %s %s",
         uid[0].toString(16),
@@ -83,7 +83,7 @@ app.on('ready', () => {
 
       //# Select the scanned card
       const memoryCapacity = mfrc522.selectCard(uid);
-      mainWindow.webContents.send('store-data', "Card Memory Capacity: " + memoryCapacity);
+      // mainWindow.webContents.send('store-data', "Card Memory Capacity: " + memoryCapacity);
       console.log("Card Memory Capacity: " + memoryCapacity);
 
       //# This is the default key for authentication
@@ -94,14 +94,17 @@ app.on('ready', () => {
       for (var i=0; i<blockIndexes.length; i++) {
         if (!mfrc522.authenticate(blockIndexes[i], key, uid)) {
           console.log("Authentication Error");
-          mainWindow.webContents.send('store-data', "Authentication Error");
+          // mainWindow.webContents.send('store-data', "Authentication Error");
           return;
         }
 
         let bufferOriginal = Buffer.from(mfrc522.getDataForBlock(blockIndexes[i]));
 
         console.log("Block: " + blockIndexes[i] + " Data: " + bufferOriginal.toString('utf8'));
-        mainWindow.webContents.send('store-data', "Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i]));
+
+        if (blockIndexes[i] == 4) {
+          mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8')); 
+        }
 
       }
 
