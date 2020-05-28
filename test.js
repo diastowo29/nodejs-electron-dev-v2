@@ -59,6 +59,11 @@ stepperPulse.set(function() {
    console.log('stepperPulse: ' + stepperPulse.value);
    stepperDir.set(function() {
    	console.log('stepperDir: ' + stepperDir.value);
-   	stepperEnable.set();
+   	setInterval(function() {
+   		stepperEnable.set()
+   	}, 250)
+   	setTimeout( function () {
+   		stepperEnable.set(0)
+   	}, 5000);
    })
 });
