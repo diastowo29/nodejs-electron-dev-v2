@@ -23,14 +23,14 @@ stepperDir.write(1, err => { // Asynchronous write
 					if (err) {
 						throw err;
 					}
-					setTimeout(function(){
-						stepperEnable.write(0, err => {
-							console.log('stepperEnable0')
-							if (err) {
-								throw err;
-							}
-					    });
-					}, 500)
+			    });
+			}, 500)
+			setTimeout(function(){
+				stepperEnable.write(0, err => {
+					console.log('stepperEnable0')
+					if (err) {
+						throw err;
+					}
 			    });
 			}, 500)
 		}
