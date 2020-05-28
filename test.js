@@ -121,7 +121,7 @@ board.on("ready", () => {
     type: Stepper.TYPE.DRIVER,
     stepsPerRev: 200,
     pins: {
-      step: 13,
+      step: 26,
       dir: 19
     }
   });
