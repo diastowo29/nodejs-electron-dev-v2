@@ -98,7 +98,7 @@ app.on('ready', () => {
           return;
         }
 
-        console.log("Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i]));
+        console.log("Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i].[0]));
         mainWindow.webContents.send('store-data', "Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i]));
 
       }
