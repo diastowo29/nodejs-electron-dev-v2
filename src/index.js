@@ -65,6 +65,8 @@ app.on('ready', () => {
   })
 
   mainWindow.webContents.on('did-finish-load', () => {
+    stepperDir.writeSync(1);
+    stepperPulse.writeSync(1);
     stepperEnable.writeSync(1);
 
     mainWindow.webContents.send('admin-data', beras);
