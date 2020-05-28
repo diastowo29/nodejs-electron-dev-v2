@@ -54,23 +54,11 @@ var stepperPulse = gpio.export(26, {
    }
 });
 
-setInterval( function () {
-	stepperPulse.set(function() {
-	   console.log('stepperPulse: ' + stepperPulse.value);
-	   stepperDir.set(function() {
-	   	console.log('stepperDir: ' + stepperDir.value);
-	   	stepperEnable.set();
-	   })
-	});
-}, 250)
 
-
-setTimeout( function () {
-	stepperEnable.set(0)
-	stepperDir.set(0)
-	stepperPulse.set(0)
-
-	stepperEnable.unexport();
-	stepperDir.unexport();
-	stepperPulse.unexport();
-}, 5000);
+stepperPulse.set(function() {
+   console.log('stepperPulse: ' + stepperPulse.value);
+   stepperDir.set(function() {
+   	console.log('stepperDir: ' + stepperDir.value);
+   	stepperEnable.set();
+   })
+});
