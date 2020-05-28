@@ -90,6 +90,7 @@ app.on('ready', () => {
       const key = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
 
       var blockIndexes = [1, 2, 3, 4];
+      var isAdmin = false;
 
       for (var i=0; i<blockIndexes.length; i++) {
         if (!mfrc522.authenticate(blockIndexes[i], key, uid)) {
@@ -102,8 +103,17 @@ app.on('ready', () => {
 
         console.log("Block: " + blockIndexes[i] + " Data: " + bufferOriginal.toString('utf8'));
 
+        if (blockIndexes[i] == 1) {
+          if (bufferOriginal.toString('utf8') == "admn") {
+            isAdmin = true
+          }
+        }
+
+
         if (blockIndexes[i] == 4) {
-          mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8')); 
+          if (!isAdmin) {
+            mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8')); 
+          }
         }
 
       }
