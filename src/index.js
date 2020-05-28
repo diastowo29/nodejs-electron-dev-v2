@@ -98,7 +98,9 @@ app.on('ready', () => {
           return;
         }
 
-        console.log("Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i]).toString('utf8'));
+        let bufferOriginal = Buffer.from(mfrc522.getDataForBlock(blockIndexes[i]));
+
+        console.log("Block: " + blockIndexes[i] + " Data: " + bufferOriginal.toString('utf8'));
         mainWindow.webContents.send('store-data', "Block: " + blockIndexes[i] + " Data: " + mfrc522.getDataForBlock(blockIndexes[i]));
 
       }
