@@ -4,6 +4,7 @@ const Mfrc522 = require("mfrc522-rpi");
 const SoftSPI = require("rpi-softspi");
 const Store = require('./store.js');
 const ipcMain = require('electron').ipcMain;
+var Gpio = require('onoff').Gpio;
 
 //# This loop keeps checking for chips. If one is near it will get the UID and authenticate
 console.log("scanning...");
