@@ -89,7 +89,7 @@ app.on('ready', () => {
       //# This is the default key for authentication
       const key = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff];
 
-      var blockIndexes = [1, 2, 3, 4];
+      var blockIndexes = [1, 4];
       var isAdmin = false;
 
       for (var i=0; i<blockIndexes.length; i++) {
@@ -140,7 +140,7 @@ app.on('ready', () => {
               0
             ];
 
-            mfrc522.writeDataToBlock(blockIndexes[i], data)
+            mfrc522.writeDataToBlock(4, data)
           }
         }
 
