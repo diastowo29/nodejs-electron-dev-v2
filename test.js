@@ -9,12 +9,12 @@ let stopBlinking = false;
 stepperDir.writeSync(1);
 stepperPulse.writeSync(1);
 for (var i=0; i<1600; i++) {
-	setTimeout(function() {
-		stepperEnable.writeSync(1)
-	}, 5000);
-	setTimeout(function() {
-		stepperEnable.writeSync(0)
-	}, 5000);
+	// setTimeout(function() {
+	// 	stepperEnable.writeSync(1)
+	// }, 5000);
+	// setTimeout(function() {
+	// 	stepperEnable.writeSync(0)
+	// }, 5000);
 }
 
 
