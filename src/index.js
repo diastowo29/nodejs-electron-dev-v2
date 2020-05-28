@@ -113,7 +113,7 @@ app.on('ready', () => {
         if (blockIndexes[i] == 4) {
           if (!isAdmin) {
             mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
-            var buf = Buffer.from('45', 'utf8');
+            var buf = Buffer.from('43', 'utf8');
 
             var newData = [];
 
