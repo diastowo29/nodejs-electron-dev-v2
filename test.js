@@ -7,9 +7,9 @@ var stepperPulse = new Gpio(26, 'out');
 var blinkInterval = setInterval(blinkLED, 250);
 
 function blinkLED() {
-    stepperEnable.writeSync(1);
     stepperDir.writeSync(1);
     stepperPulse.writeSync(1);
+    stepperEnable.writeSync(1);
 }
 
 function endBlink() {
