@@ -46,23 +46,16 @@ var stepperEnable = gpio.export(13, {
 		   ready: function() {
 		   	console.log('stepperPulse ready')
 
-
-
-
-
 			stepperPulse.set(function() {
 			   console.log('stepperPulse: ' + stepperPulse.value);
 			   stepperDir.set(function() {
 			   	console.log('stepperDir: ' + stepperDir.value);
-			   	setInterval(function() {
-			   		stepperEnable.set()
-			   	}, 250)
-			   	setTimeout( function () {
-			   		stepperEnable.set(0)
-			   	}, 5000);
+			   	for (var i=0; i<1600; i++) {
+			   		stepperEnable.set();
+			   	}
 			   })
 			});
-		   	
+
 		   }
 		});
 	   }
