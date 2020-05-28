@@ -52,6 +52,7 @@ var stepperEnable = gpio.export(13, {
 			   	console.log('stepperDir: ' + stepperDir.value);
 			   	for (var i=0; i<1600; i++) {
 			   		stepperEnable.set();
+			   		stepperEnable.set(0);
 			   	}
 			   })
 			});
