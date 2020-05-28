@@ -56,6 +56,6 @@ var stepperPulse = gpio.export(26, {
 
 setInterval( function () {
 	stepperEnable.set(function() {
-	   console.log(gpio4.value);
+	   console.log(stepperEnable.value);
 	});
 }, 250)
