@@ -48,7 +48,7 @@
 	var ipcRenderer = require('electron').ipcRenderer;
 	ipcRenderer.on('store-data', function (event,store) {
 		console.log(store)
-	    $('#userKuota').text('Sisa kuota beras anda: %s Kg', store)
+	    $('#userKuota').text('Sisa kuota beras anda: ' + store + ' Kg')
 	});
 
 	function minusClick () {
