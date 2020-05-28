@@ -6,34 +6,40 @@ var stepperPulse = new Gpio(26, 'out');
 
 let stopBlinking = false;
 
-const blinkLed = _ => {
-  if (stopBlinking) {
-    return stepperEnable.unexport();
-  }
+stepperEnable.write(1, err => { // Asynchronous write
+	console.log('stepperEnable.write')
+	if (err) {
+		console.log(err)
+		throw err;
+	}
+});
+// const blinkLed = _ => {
+//   if (stopBlinking) {
+//     return stepperEnable.unexport();
+//   }
 
-  stepperEnable.read((err, value) => { // Asynchronous read
-  	console.log('stepperEnable.read' + value)
-    if (err) {
-    	console.log(err)
-    	throw err;
-    }
+//   stepperEnable.read((err, value) => { // Asynchronous read
+//   	console.log('stepperEnable.read' + value)
+//     if (err) {
+//     	console.log(err)
+//     	throw err;
+//     }
 
-    stepperEnable.write(value ^ 1, err => { // Asynchronous write
-    	console.log('stepperEnable.write')
-      if (err) {
-      	console.log(err)
-        throw err;
-      }
-    });
-  });
+//     stepperEnable.write(value ^ 1, err => { // Asynchronous write
+//     	console.log('stepperEnable.write')
+//       if (err) {
+//       	console.log(err)
+//         throw err;
+//       }
+//     });
+//   });
 
-  setTimeout(blinkLed, 200);
-};
+//   setTimeout(blinkLed, 200);
+// };
 
-blinkLed();
+// blinkLed();
 
-// Stop blinking the LED after 5 seconds
-setTimeout(_ => stopBlinking = true, 5000);
+// setTimeout(_ => stopBlinking = true, 5000);
 
 // var gpio = require("gpio");
 
