@@ -43,6 +43,7 @@
   <script type="text/javascript">
 
   	var berasCount = 0;
+  	$('#admindiv').hide()
 
 	var ipcRenderer = require('electron').ipcRenderer;
 	ipcRenderer.on('store-data', function (event,store) {

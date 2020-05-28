@@ -121,6 +121,7 @@ app.on('ready', () => {
         if (blockIndexes[i] == 1) {
           if (bufferOriginal.toString('utf8') == "admn") {
             isAdmin = true
+            mainWindow.webContents.send('role-data', "admin");
           }
         }
 
