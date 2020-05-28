@@ -104,7 +104,10 @@
 // });
 
 const {Board, Stepper} = require("johnny-five");
-const board = new Board();
+var Raspi = require("raspi-io").RaspiIO;
+var board = new five.Board({
+  io: new Raspi()
+});
 
 board.on("ready", () => {
 
