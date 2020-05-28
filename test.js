@@ -7,14 +7,14 @@ var stepperPulse = new Gpio(26, 'out');
 var blinkInterval = setInterval(blinkLED, 250); //run the blinkLED function every 250ms
 
 function blinkLED() {
-  if (stepperEnable.readSync() === 0) {
+  // if (stepperEnable.readSync() === 0) {
     stepperEnable.writeSync(1);
     stepperDir.writeSync(1);
     stepperPulse.writeSync(1);
-  } else {
-    stepperDir.writeSync(1);
-    stepperPulse.writeSync(1);
-  }
+  // } else {
+  //   stepperDir.writeSync(1);
+  //   stepperPulse.writeSync(1);
+  // }
 }
 
 function endBlink() {
