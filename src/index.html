@@ -41,11 +41,10 @@
 	</div>
   </body>
   <script type="text/javascript">
-
+	var ipcRenderer = require('electron').ipcRenderer;
   	var berasCount = 0;
   	$('#admindiv').hide()
 
-	var ipcRenderer = require('electron').ipcRenderer;
 	ipcRenderer.on('store-data', function (event,store) {
 	    $('#userKuota').text('Sisa kuota beras anda: ' + parseInt(store) + ' Kg')
 	});
@@ -56,7 +55,6 @@
 	});
 
 	ipcRenderer.on('role-data', function (event,store) {
-		$('#berasKuota').text(store)
 		if (store == 'admin') {
 			$('#admindiv').show()
 			$('#userdiv').hide()

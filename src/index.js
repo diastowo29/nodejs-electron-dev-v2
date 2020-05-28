@@ -122,6 +122,8 @@ app.on('ready', () => {
           if (bufferOriginal.toString('utf8') == "admn") {
             isAdmin = true
             mainWindow.webContents.send('role-data', "admin");
+          } else {
+            isAdmin = false
           }
         }
 
