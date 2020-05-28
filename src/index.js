@@ -119,7 +119,7 @@ app.on('ready', () => {
         console.log("Block: " + blockIndexes[i] + " Data: " + bufferOriginal.toString('utf8'));
 
         if (blockIndexes[i] == 1) {
-          if (bufferOriginal.toString('utf8') == "admn") {
+          if (bufferOriginal.toString('utf8').contains("admn")) {
             console.log('this is admin')
             isAdmin = true
             mainWindow.webContents.send('role-data', "admin");
