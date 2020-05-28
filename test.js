@@ -4,29 +4,32 @@ var stepperEnable = new Gpio(13, 'out');
 var stepperDir = new Gpio(19, 'out');
 var stepperPulse = new Gpio(26, 'out');
 
-var blinkInterval = setInterval(blinkLED, 250);
+let stopBlinking = false;
 
-function blinkLED() {
-    stepperDir.writeSync(1);
-    stepperPulse.writeSync(1);
-    stepperEnable.writeSync(1);
-}
+const blinkLed = _ => {
+  if (stopBlinking) {
+    return stepperEnable.unexport();
+  }
 
-function endBlink() {
-	turnOff()
-}
+  stepperEnable.read((err, value) => { // Asynchronous read
+    if (err) {
+      throw err;
+    }
 
-function turnOff () {
-	stepperPulse.writeSync(0)
-	stepperDir.writeSync(0)
-	stepperEnable.writeSync(0)
+    stepperEnable.write(value ^ 1, err => { // Asynchronous write
+      if (err) {
+        throw err;
+      }
+    });
+  });
 
-	stepperPulse.unexport()
-	stepperDir.unexport()
-	stepperEnable.unexport()
-}
+  setTimeout(blinkLed, 200);
+};
 
-setTimeout(endBlink, 5000);
+blinkLed();
+
+// Stop blinking the LED after 5 seconds
+setTimeout(_ => stopBlinking = true, 5000);
 
 // var gpio = require("gpio");
 
