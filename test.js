@@ -164,17 +164,20 @@ var Gpio = require('onoff').Gpio;
 var stepperEnable = new Gpio(13, 'out');
 var stepperDir = new Gpio(19, 'out');
 var stepperPulse = new Gpio(26, 'out');
+var ledPin = new Gpio(3, 'out');
 
-stepperEnable.writeSync(1)
-stepperDir.writeSync(1)
-var blinkInterval = setInterval(blinkLED, 100);
+stepperEnable.writeSync(0)
+stepperDir.writeSync(0)
+var blinkInterval = setInterval(blinkLED, 50);
 
 function blinkLED() {
   console.log('stepperPulse: %s', stepperPulse.readSync())
   if (stepperPulse.readSync() === 0) {
     stepperPulse.writeSync(1);
+    ledPin.writeSync(1);
   } else {
     stepperPulse.writeSync(0);
+    ledPin.writeSync(0);
   }
 }
 
@@ -184,9 +187,11 @@ function endBlink() {
   stepperPulse.writeSync(0);
   stepperDir.writeSync(0);
   stepperEnable.writeSync(0);
+  ledPin.writeSync(0);
   stepperPulse.unexport();
   stepperDir.unexport();
   stepperEnable.unexport();
+  ledPin.unexport();
 }
 
 setTimeout(endBlink, 50000);
