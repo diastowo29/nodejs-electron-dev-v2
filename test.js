@@ -48,17 +48,11 @@ setInterval(function () {
       triggerPin.writeSync(0)
     }, 10)
   }, 2)
+  echoPin.watch(function (err, value) {
+    if (err) {
+      console.error('There was an error', err);
+      return;
+    }
+    console.log(value)
+  });
 }, 250)
-console.log('coba');
-setTimeout(function(){
-  console.log('delay')
-}, 2000);
-console.log('coba lagi')
-
-echoPin.watch(function (err, value) {
-  if (err) {
-    console.error('There was an error', err);
-    return;
-  }
-  console.log(value)
-});
