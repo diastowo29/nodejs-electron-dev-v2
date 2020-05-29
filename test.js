@@ -83,8 +83,8 @@
 // });
 
 var speed        = 150; // RPM
-var directionPin = 20; // Pin used for direction
-var stepPin      = 21; // Pin used for stepping
+var directionPin = 19; // Pin used for direction
+var stepPin      = 26; // Pin used for stepping
 
 console.log("Starting stepper-wiringpi - digital_ForwardBackward");
 
