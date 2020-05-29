@@ -170,11 +170,13 @@ stepperDir.writeSync(1)
 
 for (var i=0; i<3200; i++) {
   setTimeout(function(){
+    console.log(i)
     stepperPulse.write(1, err => {
         if (err) {
           throw err;
         }
         setTimeout(function(){
+          console.log(i)
           stepperPulse.write(0, err1 => {
             if (err1) {
               throw err1;
