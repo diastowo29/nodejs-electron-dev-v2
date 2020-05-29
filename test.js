@@ -115,7 +115,7 @@ board.on("ready", function() {
   board.repl.inject({
     led
   });
-  led.blink();
+  led.on();
 
   // temporal.loop(500, function(loop) {
   //   strobe[loop.called % 2 === 0 ? "high" : "low"]();
