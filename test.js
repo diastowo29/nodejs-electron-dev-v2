@@ -162,19 +162,9 @@
 
 var Gpio = require('onoff').Gpio;
 var stepperEnable = new Gpio(2, 'out');
-var stepperDir = new Gpio(13, 'out');
-var stepperPulse = new Gpio(19, 'out');
-
-console.log('stepperDir: ' + stepperDir.readSync())
-console.log('stepperPulse: ' + stepperPulse.readSync())
-
-stepperDir.writeSync(1);
-stepperPulse.writeSync(1);
-
-console.log('stepperDir: ' + stepperDir.readSync())
-console.log('stepperPulse: ' + stepperPulse.readSync())
 
 var blinkInterval = setInterval(blinkLED, 250);
+stepperEnable.writeSync(0)
 
 function blinkLED() {
   console.log('stepperEnable: %s', stepperEnable.readSync())
