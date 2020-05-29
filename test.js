@@ -171,11 +171,11 @@ stepperDir.writeSync(1)
 for (var i=0; i<3200; i++) {
   setTimeout(function() {
     stepperPulse.writeSync(1);
-    console.log('stepperPulse: %s', stepperPulse.readSync())
+    console.log('stepperPulse: %s ' + i, stepperPulse.readSync())
   }, 200);
   setTimeout(function() {
     stepperPulse.writeSync(0);
-    console.log('stepperPulse: %s', stepperPulse.readSync())
+    console.log('stepperPulse: %s ' + i, stepperPulse.readSync())
   }, 200);
 }
 // var blinkInterval = setInterval(blinkLED, 250);
