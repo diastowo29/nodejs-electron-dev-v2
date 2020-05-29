@@ -190,7 +190,11 @@ function endBlink() {
   console.log('end process')
   clearInterval(blinkInterval);
   stepperEnable.writeSync(0);
+  stepperDir.writeSync(0);
+  stepperPulse.writeSync(0);
   stepperEnable.unexport();
+  stepperDir.unexport();
+  stepperPulse.unexport();
 }
 
 setTimeout(endBlink, 5000);
