@@ -46,11 +46,9 @@ triggerPin.writeSync(1)
 wait(10)
 triggerPin.writeSync(0)
 
-console.log(echoPin.readSync() == 0)
-// while (echoPin.readSync()) {
-//   text += "The number is " + i;
-//   i++;
-// }
+while (echoPin.readSync() == 0) {
+  console.log(echoPin.readSync())
+}
 
 function wait(ms){
    var start = new Date().getTime();
