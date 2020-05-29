@@ -113,47 +113,69 @@
 
 // console.log("Starting to move ...")
 
-var five = require("johnny-five");
-var Raspi = require("raspi-io").RaspiIO;
-const {Stepper} = require("johnny-five");
-var board = new five.Board({
-  io: new Raspi()
-});
+
+/* JOHNNY FIVE */
+// var five = require("johnny-five");
+// var Raspi = require("raspi-io").RaspiIO;
+// const {Stepper} = require("johnny-five");
+// var board = new five.Board({
+//   io: new Raspi()
+// });
 
 
-board.on("ready", () => {
+// board.on("ready", () => {
 
-  /**
-   * In order to use the Stepper class, your board must be flashed with
-   * either of the following:
-   *
-   * - AdvancedFirmata https://github.com/soundanalogous/AdvancedFirmata
-   * - ConfigurableFirmata https://github.com/firmata/arduino/releases/tag/v2.6.2
-   *
-   */
+//   /**
+//    * In order to use the Stepper class, your board must be flashed with
+//    * either of the following:
+//    *
+//    * - AdvancedFirmata https://github.com/soundanalogous/AdvancedFirmata
+//    * - ConfigurableFirmata https://github.com/firmata/arduino/releases/tag/v2.6.2
+//    *
+//    */
 
-  const stepper = new Stepper({
-    type: Stepper.TYPE.DRIVER,
-    stepsPerRev: 200,
-    pins: {
-      step: 26,
-      dir: 19
-    }
-  });
+//   const stepper = new Stepper({
+//     type: Stepper.TYPE.DRIVER,
+//     stepsPerRev: 200,
+//     pins: {
+//       step: 26,
+//       dir: 19
+//     }
+//   });
 
-  // Set stepper to 180 RPM, counter-clockwise with acceleration and deceleration
-  stepper.rpm(180).ccw().accel(1600).decel(1600);
+//   // Set stepper to 180 RPM, counter-clockwise with acceleration and deceleration
+//   stepper.rpm(180).ccw().accel(1600).decel(1600);
   
-  // Make 10 full revolutions
-  stepper.step(2000, () => {
+//   // Make 10 full revolutions
+//   stepper.step(2000, () => {
 
-    console.log("Done moving CCW");
+//     console.log("Done moving CCW");
 
-    // once first movement is done, make 10 revolutions clockwise at previously
-    //      defined speed, accel, and decel by passing an object into stepper.step
-    stepper.step({
-      steps: 2000,
-      direction: Stepper.DIRECTION.CW
-    }, () => console.log("Done moving CW"));
-  });
-});
+//     // once first movement is done, make 10 revolutions clockwise at previously
+//     //      defined speed, accel, and decel by passing an object into stepper.step
+//     stepper.step({
+//       steps: 2000,
+//       direction: Stepper.DIRECTION.CW
+//     }, () => console.log("Done moving CW"));
+//   });
+// });
+
+var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
+var LED = new Gpio(13, 'out'); //use GPIO pin 4, and specify that it is output
+var blinkInterval = setInterval(blinkLED, 250); //run the blinkLED function every 250ms
+
+function blinkLED() { //function to start blinking
+  if (LED.readSync() === 0) { //check the pin state, if the state is 0 (or off)
+    LED.writeSync(1); //set pin state to 1 (turn LED on)
+  } else {
+    LED.writeSync(0); //set pin state to 0 (turn LED off)
+  }
+}
+
+function endBlink() { //function to stop blinking
+  clearInterval(blinkInterval); // Stop blink intervals
+  LED.writeSync(0); // Turn LED off
+  LED.unexport(); // Unexport GPIO to free resources
+}
+
+setTimeout(endBlink, 5000); //stop blinking after 5 seconds
