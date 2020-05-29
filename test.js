@@ -167,7 +167,7 @@ var stepperPulse = new Gpio(26, 'out');
 
 stepperEnable.writeSync(1)
 stepperDir.writeSync(1)
-var blinkInterval = setInterval(blinkLED, 25);
+var blinkInterval = setInterval(blinkLED, 250);
 
 function blinkLED() {
   console.log('stepperPulse: %s', stepperPulse.readSync())
