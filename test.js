@@ -161,27 +161,34 @@
 // });
 
 var Gpio = require('onoff').Gpio;
-var stepperEnable = new Gpio(3, 'out');
+var stepperEnable = new Gpio(13, 'out');
+var stepperDir = new Gpio(19, 'out');
+var stepperPulse = new Gpio(26, 'out');
 
-var blinkInterval = setInterval(blinkLED, 250);
-stepperEnable.writeSync(0)
+stepperEnable.writeSync(1)
+stepperDir.writeSync(1)
+var blinkInterval = setInterval(blinkLED, 25);
 
 function blinkLED() {
-  console.log('stepperEnable: %s', stepperEnable.readSync())
-  if (stepperEnable.readSync() === 0) {
-    stepperEnable.writeSync(1);
+  console.log('stepperPulse: %s', stepperPulse.readSync())
+  if (stepperPulse.readSync() === 0) {
+    stepperPulse.writeSync(1);
   } else {
-    stepperEnable.writeSync(0);
+    stepperPulse.writeSync(0);
   }
 }
 
 function endBlink() {
   console.log('end process')
   clearInterval(blinkInterval);
+  stepperPulse.writeSync(0);
+  stepperDir.writeSync(0);
   stepperEnable.writeSync(0);
+  stepperPulse.unexport();
+  stepperDir.unexport();
   stepperEnable.unexport();
 }
 
-setTimeout(endBlink, 5000);
+setTimeout(endBlink, 50000);
 
 process.on('SIGINT', endBlink);
