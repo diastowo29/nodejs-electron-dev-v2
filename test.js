@@ -167,26 +167,7 @@ var stepperPulse = new Gpio(26, 'out');
 
 stepperEnable.writeSync(1)
 stepperDir.writeSync(1)
-
-for (var i=0; i<3200; i++) {
-  setTimeout(function(){
-    stepperPulse.write(1, err => {
-        if (err) {
-          throw err;
-        }
-        console.log(i)
-        setTimeout(function(){
-          stepperPulse.write(0, err1 => {
-            if (err1) {
-              throw err1;
-            }
-            console.log(i)
-          })
-        },200)
-      });
-  }, 200)
-}
-// var blinkInterval = setInterval(blinkLED, 250);
+var blinkInterval = setInterval(blinkLED, 100);
 
 function blinkLED() {
   console.log('stepperPulse: %s', stepperPulse.readSync())
@@ -199,7 +180,7 @@ function blinkLED() {
 
 function endBlink() {
   console.log('end process')
-  // clearInterval(blinkInterval);
+  clearInterval(blinkInterval);
   stepperPulse.writeSync(0);
   stepperDir.writeSync(0);
   stepperEnable.writeSync(0);
@@ -208,6 +189,6 @@ function endBlink() {
   stepperEnable.unexport();
 }
 
-setTimeout(endBlink, 5000);
+setTimeout(endBlink, 50000);
 
 process.on('SIGINT', endBlink);
