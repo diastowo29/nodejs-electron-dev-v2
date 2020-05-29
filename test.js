@@ -161,22 +161,22 @@
 // });
 
 var Gpio = require('onoff').Gpio;
-var stepperEnable = new Gpio(13, 'out');
-var stepperDir = new Gpio(19, 'out');
-var stepperPulse = new Gpio(26, 'out');
+var pinEnable = new Gpio(13, 'out');
+var pinDir = new Gpio(19, 'out');
+var pinPulse = new Gpio(26, 'out');
 var ledPin = new Gpio(3, 'out');
 
-stepperEnable.writeSync(0)
-stepperDir.writeSync(0)
+pinEnable.writeSync("HIGH")
+pinDir.writeSync("HIGH")
 var blinkInterval = setInterval(blinkLED, 50);
 
 function blinkLED() {
-  console.log('stepperPulse: %s', stepperPulse.readSync())
-  if (stepperPulse.readSync() === 0) {
-    stepperPulse.writeSync(1);
+  console.log('pinPulse: %s', pinPulse.readSync())
+  if (pinPulse.readSync() === 0) {
+    pinPulse.writeSync("HIGH");
     ledPin.writeSync(1);
   } else {
-    stepperPulse.writeSync(0);
+    pinPulse.writeSync("LOW");
     ledPin.writeSync(0);
   }
 }
@@ -184,13 +184,13 @@ function blinkLED() {
 function endBlink() {
   console.log('end process')
   clearInterval(blinkInterval);
-  stepperPulse.writeSync(0);
-  stepperDir.writeSync(0);
-  stepperEnable.writeSync(0);
+  pinPulse.writeSync(0);
+  pinDir.writeSync(0);
+  pinEnable.writeSync(0);
   ledPin.writeSync(0);
-  stepperPulse.unexport();
-  stepperDir.unexport();
-  stepperEnable.unexport();
+  pinPulse.unexport();
+  pinDir.unexport();
+  pinEnable.unexport();
   ledPin.unexport();
 }
 
