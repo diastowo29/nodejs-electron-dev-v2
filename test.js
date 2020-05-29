@@ -103,7 +103,7 @@
 //    }
 // });
 var five = require("johnny-five");
-const {Board, Stepper} = require("johnny-five");
+const {Board, Stepper, Led} = require("johnny-five");
 var temporal = require("temporal");
 var Raspi = require("raspi-io").RaspiIO;
 var board = new five.Board({
@@ -111,18 +111,11 @@ var board = new five.Board({
 });
 
 board.on("ready", function() {
-  var events = [];
-  var stepperEnable = new five.Pin(13);
-  var stepperDir = new five.Pin(19);
-  var stepperPulse = new five.Pin(26);
-
-  stepperDir["high"]();
-  stepperPulse["high"]();
-
-  temporal.loop(500, function(loop) {
-    stepperEnable["high"]();
-    console.log('stepperEnable high')
+  const led = new Led(13);
+  board.repl.inject({
+    led
   });
+  led.blink();
 
   // temporal.loop(500, function(loop) {
   //   strobe[loop.called % 2 === 0 ? "high" : "low"]();
