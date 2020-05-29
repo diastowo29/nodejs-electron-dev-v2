@@ -208,6 +208,6 @@ function endBlink() {
   stepperEnable.unexport();
 }
 
-setTimeout(endBlink, 50000);
+setTimeout(endBlink, 5000);
 
 process.on('SIGINT', endBlink);
