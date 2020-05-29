@@ -166,17 +166,17 @@ var pinDir = new Gpio(19, 'out');
 var pinPulse = new Gpio(26, 'out');
 var ledPin = new Gpio(3, 'out');
 
-pinEnable.writeSync("HIGH")
-pinDir.writeSync("HIGH")
+pinEnable.writeSync(1)
+pinDir.writeSync(1)
 var blinkInterval = setInterval(blinkLED, 50);
 
 function blinkLED() {
   console.log('pinPulse: %s', pinPulse.readSync())
   if (pinPulse.readSync() === 0) {
-    pinPulse.writeSync("HIGH");
+    pinPulse.writeSync(1);
     ledPin.writeSync(1);
   } else {
-    pinPulse.writeSync("LOW");
+    pinPulse.writeSync(0);
     ledPin.writeSync(0);
   }
 }
