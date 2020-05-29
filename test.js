@@ -46,9 +46,10 @@ triggerPin.writeSync(1)
 wait(10)
 triggerPin.writeSync(0)
 
-while (echoPin.readSync() == 0) {
-  console.log(echoPin.readSync())
+do {
+  console.log('echoPin: ' + echoPin.readSync())
 }
+while (echoPin.readSync() == 0);
 
 function wait(ms){
    var start = new Date().getTime();
