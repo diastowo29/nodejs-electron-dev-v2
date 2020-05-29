@@ -167,25 +167,25 @@ var stepperPulse = new Gpio(26, 'out');
 
 stepperDir.writeSync(1);
 stepperPulse.writeSync(1);
-var blinkInterval = setInterval(blinkLED, 250); //run the blinkLED function every 250ms
+var blinkInterval = setInterval(blinkLED, 250);
 
-function blinkLED() { //function to start blinking
-
+function blinkLED() {
   console.log('readpin')
   console.log(stepperEnable.readSync())
-  if (stepperEnable.readSync() === 0) { //check the pin state, if the state is 0 (or off)
-    stepperEnable.writeSync(1); //set pin state to 1 (turn LED on)
+  if (stepperEnable.readSync() === 0) {
+    stepperEnable.writeSync(1);
   } else {
-    stepperEnable.writeSync(0); //set pin state to 0 (turn LED off)
+    stepperEnable.writeSync(0);
   }
 }
 
-function endBlink() { //function to stop blinking
-  clearInterval(blinkInterval); // Stop blink intervals
-  stepperEnable.writeSync(0); // Turn LED off
-  stepperEnable.unexport(); // Unexport GPIO to free resources
+function endBlink() {
+  console.log('end process')
+  clearInterval(blinkInterval);
+  stepperEnable.writeSync(0);
+  stepperEnable.unexport();
 }
 
-setTimeout(endBlink, 5000); //stop blinking after 5 seconds
+setTimeout(endBlink, 5000);
 
 process.on('SIGINT', endBlink);
