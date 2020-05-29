@@ -46,12 +46,11 @@ triggerPin.writeSync(1)
 wait(10)
 triggerPin.writeSync(0)
 
-echoPin.read((err, value) => { // Asynchronous read
-  if (err) {
-    throw err;
-  }
-  console.log(value)
-});
+console.log(echoPin.readSync() == 0)
+// while (echoPin.readSync()) {
+//   text += "The number is " + i;
+//   i++;
+// }
 
 function wait(ms){
    var start = new Date().getTime();
