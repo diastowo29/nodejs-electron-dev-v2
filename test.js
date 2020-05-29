@@ -196,4 +196,4 @@ blinkLed();
 // Stop blinking the LED after 5 seconds
 setTimeout(_ => stopBlinking = true, 5000);
 
-process.on('SIGINT', stopBlinking);
+// process.on('SIGINT', stopBlinking);
