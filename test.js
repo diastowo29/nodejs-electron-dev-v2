@@ -178,7 +178,10 @@ stepperDir.writeSync(1)
 //     console.log('stepperPulse: %s ' + i, stepperPulse.readSync())
 //   }, 200);
 // }
-const iv = setInterval(_ => stepperPulse.writeSync(stepperPulse.readSync() ^ 1), 200);
+const iv = setInterval(function() {
+  stepperPulse.writeSync(stepperPulse.readSync() ^ 1)
+  console.log('1')
+}, 200);
 // var blinkInterval = setInterval(blinkLED, 250);
 
 function blinkLED() {
