@@ -82,33 +82,77 @@
 //    }
 // });
 
-var speed        = 150; // RPM
-var directionPin = 19; // Pin used for direction
-var stepPin      = 26; // Pin used for stepping
+// var speed        = 150; // RPM
+// var directionPin = 19; // Pin used for direction
+// var stepPin      = 26; // Pin used for stepping
 
-console.log("Starting stepper-wiringpi - digital_ForwardBackward");
+// console.log("Starting stepper-wiringpi - digital_ForwardBackward");
 
-var stepperWiringPi = require("stepper-wiringpi");
-var motor1 = stepperWiringPi.setupDigital(200, stepPin, directionPin);
-var direction = stepperWiringPi.FORWARD;
+// var stepperWiringPi = require("stepper-wiringpi");
+// var motor1 = stepperWiringPi.setupDigital(200, stepPin, directionPin);
+// var direction = stepperWiringPi.FORWARD;
 
-console.log("Globals: FORWARD=%d, BACKWARD=%d", stepperWiringPi.FORWARD, stepperWiringPi.BACKWARD);
+// console.log("Globals: FORWARD=%d, BACKWARD=%d", stepperWiringPi.FORWARD, stepperWiringPi.BACKWARD);
 
-function changeDirection() {
-  console.log("Changing direction from %d", direction);
-  if (direction == stepperWiringPi.FORWARD) {
-    direction = stepperWiringPi.BACKWARD;
-    motor1.backward();
-  } else {
-    direction = stepperWiringPi.FORWARD;
-    motor1.forward();
-  }
-  setTimeout(changeDirection.bind(this), 5000);
-} // End of changeDirection
+// function changeDirection() {
+//   console.log("Changing direction from %d", direction);
+//   if (direction == stepperWiringPi.FORWARD) {
+//     direction = stepperWiringPi.BACKWARD;
+//     motor1.backward();
+//   } else {
+//     direction = stepperWiringPi.FORWARD;
+//     motor1.forward();
+//   }
+//   setTimeout(changeDirection.bind(this), 5000);
+// } // End of changeDirection
 
-debugger;
-motor1.setSpeed(speed);
+// debugger;
+// motor1.setSpeed(speed);
 
-changeDirection();
+// changeDirection();
 
-console.log("Starting to move ...")
+// console.log("Starting to move ...")
+
+var five = require("johnny-five");
+var Raspi = require("raspi-io").RaspiIO;
+var board = new five.Board({
+  io: new Raspi()
+});
+
+
+board.on("ready", () => {
+
+  /**
+   * In order to use the Stepper class, your board must be flashed with
+   * either of the following:
+   *
+   * - AdvancedFirmata https://github.com/soundanalogous/AdvancedFirmata
+   * - ConfigurableFirmata https://github.com/firmata/arduino/releases/tag/v2.6.2
+   *
+   */
+
+  const stepper = new Stepper({
+    type: Stepper.TYPE.DRIVER,
+    stepsPerRev: 200,
+    pins: {
+      step: 26,
+      dir: 19
+    }
+  });
+
+  // Set stepper to 180 RPM, counter-clockwise with acceleration and deceleration
+  stepper.rpm(180).ccw().accel(1600).decel(1600);
+  
+  // Make 10 full revolutions
+  stepper.step(2000, () => {
+
+    console.log("Done moving CCW");
+
+    // once first movement is done, make 10 revolutions clockwise at previously
+    //      defined speed, accel, and decel by passing an object into stepper.step
+    stepper.step({
+      steps: 2000,
+      direction: Stepper.DIRECTION.CW
+    }, () => console.log("Done moving CW"));
+  });
+});
