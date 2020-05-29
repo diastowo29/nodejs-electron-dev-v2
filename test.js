@@ -171,9 +171,11 @@ stepperDir.writeSync(1)
 for (var i=0; i<3200; i++) {
   setTimeout(function() {
     stepperPulse.writeSync(1);
+    console.log('stepperPulse: %s', stepperPulse.readSync())
   }, 200);
   setTimeout(function() {
     stepperPulse.writeSync(0);
+    console.log('stepperPulse: %s', stepperPulse.readSync())
   }, 200);
 }
 // var blinkInterval = setInterval(blinkLED, 250);
@@ -189,7 +191,7 @@ function blinkLED() {
 
 function endBlink() {
   console.log('end process')
-  clearInterval(blinkInterval);
+  // clearInterval(blinkInterval);
   stepperPulse.writeSync(0);
   stepperDir.writeSync(0);
   stepperEnable.writeSync(0);
