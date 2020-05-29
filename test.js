@@ -1,4 +1,4 @@
-var Gpio = require('onoff').Gpio;
+// var Gpio = require('onoff').Gpio;
 // var pinEnable = new Gpio(13, 'out');
 // var pinDir = new Gpio(19, 'out');
 // var pinPulse = new Gpio(26, 'out');
@@ -36,25 +36,33 @@ var Gpio = require('onoff').Gpio;
 
 // process.on('SIGINT', endBlink);
 
+const Gpio = require('pigpio').Gpio;
 
-var triggerPin = new Gpio(23, 'out');
-var echoPin = new Gpio(24, 'in');
+// The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
+const MICROSECDONDS_PER_CM = 1e6/34321;
 
-triggerPin.writeSync(0)
-wait(2)
-triggerPin.writeSync(1)
-wait(10)
-triggerPin.writeSync(0)
+const trigger = new Gpio(23, {mode: Gpio.OUTPUT});
+const echo = new Gpio(24, {mode: Gpio.INPUT, alert: true});
 
-do {
-  console.log('echoPin: ' + echoPin.readSync())
-}
-while (echoPin.readSync() == 0);
+trigger.digitalWrite(0); // Make sure trigger is low
 
-function wait(ms){
-   var start = new Date().getTime();
-   var end = start;
-   while(end < start + ms) {
-     end = new Date().getTime();
-  }
-}
+const watchHCSR04 = () => {
+  let startTick;
+
+  echo.on('alert', (level, tick) => {
+    if (level == 1) {
+      startTick = tick;
+    } else {
+      const endTick = tick;
+      const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+      console.log(diff / 2 / MICROSECDONDS_PER_CM);
+    }
+  });
+};
+
+watchHCSR04();
+
+// Trigger a distance measurement once per second
+setInterval(() => {
+  trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+}, 1000);
