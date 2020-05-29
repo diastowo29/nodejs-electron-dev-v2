@@ -40,19 +40,24 @@ var Gpio = require('onoff').Gpio;
 var triggerPin = new Gpio(23, 'out');
 var echoPin = new Gpio(24, 'in');
 
-setInterval(function () {
-  triggerPin.writeSync(0)
-  setTimeout(function(){
-    triggerPin.writeSync(1)
-    setTimeout(function(){
-      triggerPin.writeSync(0)
-    }, 10)
-  }, 2)
-  echoPin.watch(function (err, value) {
-    if (err) {
-      console.error('There was an error', err);
-      return;
-    }
-    console.log(value)
-  });
-}, 250)
+triggerPin.writeSync(0)
+wait(2)
+triggerPin.writeSync(1)
+wait(10)
+triggerPin.writeSync(0)
+
+echoPin.watch(function (err, value) {
+  if (err) {
+    console.error('There was an error', err);
+    return;
+  }
+  console.log(value)
+});
+
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
