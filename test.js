@@ -168,32 +168,44 @@ var stepperPulse = new Gpio(26, 'out');
 stepperEnable.writeSync(1)
 stepperDir.writeSync(1)
 
-let stopBlinking = false;
+for (var i=0; i<3200; i++) {
+  setTimeout(function(){
+    stepperPulse.write(1, err => {
+        if (err) {
+          throw err;
+        }
+        setTimeout(function(){
+          stepperPulse.write(0, err1 => {
+            if (err1) {
+              throw err1;
+            }
+          })
+        },200)
+      });
+  }, 200)
+}
+// var blinkInterval = setInterval(blinkLED, 250);
 
-// Toggle the state of the LED connected to GPIO17 every 200ms
-const blinkLed = _ => {
-  if (stopBlinking) {
-    return stepperPulse.unexport();
+function blinkLED() {
+  console.log('stepperPulse: %s', stepperPulse.readSync())
+  if (stepperPulse.readSync() === 0) {
+    stepperPulse.writeSync(1);
+  } else {
+    stepperPulse.writeSync(0);
   }
+}
 
-  stepperPulse.read((err, value) => { // Asynchronous read
-    if (err) {
-      throw err;
-    }
+function endBlink() {
+  console.log('end process')
+  // clearInterval(blinkInterval);
+  stepperPulse.writeSync(0);
+  stepperDir.writeSync(0);
+  stepperEnable.writeSync(0);
+  stepperPulse.unexport();
+  stepperDir.unexport();
+  stepperEnable.unexport();
+}
 
-    stepperPulse.write(value ^ 1, err => { // Asynchronous write
-      if (err) {
-        throw err;
-      }
-    });
-  });
+setTimeout(endBlink, 50000);
 
-  setTimeout(blinkLed, 200);
-};
-
-blinkLed();
-
-// Stop blinking the LED after 5 seconds
-setTimeout(_ => stopBlinking = true, 5000);
-
-// process.on('SIGINT', stopBlinking);
+process.on('SIGINT', endBlink);
