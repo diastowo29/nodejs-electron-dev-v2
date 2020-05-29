@@ -66,18 +66,49 @@
 
 // setTimeout(_ => stopBlinking = true, 5000);
 
-var gpio = require("gpio");
+// var gpio = require("gpio");
 
-var stepperEnable = gpio.export(13, {
-   direction: gpio.DIRECTION.OUT,
-   interval: 200,
-   ready: function() {
-    console.log('stepperEnable ready')
-    setInterval(function(){
-      stepperEnable.set()
-    }, 500);
-    setTimeout(function(){
-      stepperEnable.set(0)
-    }, 1500);
-   }
-});
+// var stepperEnable = gpio.export(13, {
+//    direction: gpio.DIRECTION.OUT,
+//    interval: 200,
+//    ready: function() {
+//     console.log('stepperEnable ready')
+//     setInterval(function(){
+//       stepperEnable.set()
+//     }, 500);
+//     setTimeout(function(){
+//       stepperEnable.set(0)
+//     }, 1500);
+//    }
+// });
+
+var speed        = 150; // RPM
+var directionPin = 20; // Pin used for direction
+var stepPin      = 21; // Pin used for stepping
+
+console.log("Starting stepper-wiringpi - digital_ForwardBackward");
+
+var stepperWiringPi = require("stepper-wiringpi");
+var motor1 = stepperWiringPi.setupDigital(200, stepPin, directionPin);
+var direction = stepperWiringPi.FORWARD;
+
+console.log("Globals: FORWARD=%d, BACKWARD=%d", stepperWiringPi.FORWARD, stepperWiringPi.BACKWARD);
+
+function changeDirection() {
+  console.log("Changing direction from %d", direction);
+  if (direction == stepperWiringPi.FORWARD) {
+    direction = stepperWiringPi.BACKWARD;
+    motor1.backward();
+  } else {
+    direction = stepperWiringPi.FORWARD;
+    motor1.forward();
+  }
+  setTimeout(changeDirection.bind(this), 5000);
+} // End of changeDirection
+
+debugger;
+motor1.setSpeed(speed);
+
+changeDirection();
+
+console.log("Starting to move ...")
