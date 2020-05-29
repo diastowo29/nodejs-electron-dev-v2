@@ -103,7 +103,7 @@
 //    }
 // });
 var five = require("johnny-five");
-const {Board, Stepper} = require("johnny-five");
+const {Board, Stepper, Motor} = require("johnny-five");
 var temporal = require("temporal");
 var Raspi = require("raspi-io").RaspiIO;
 var board = new five.Board({
@@ -111,18 +111,45 @@ var board = new five.Board({
 });
 
 board.on("ready", function() {
-  var events = [];
-  // var strobe = new five.Pin(13);
-
-  const led = new Led(13);
-
-  // This will grant access to the led instance
-  // from within the REPL that's created when
-  // running this program.
-  board.repl.inject({
-    led
+  const motor = new Motor({
+    pins: {
+      pwm: 13,
+      dir: 19,
+      cdir: 26
+    }
   });
 
-  led.blink();
+  board.repl.inject({
+    motor
+  });
+
+  motor.on("start", () => {
+    console.log(`start: ${Date.now()}`);
+  });
+
+  motor.on("stop", () => {
+    console.log(`automated stop on timer: ${Date.now()}`);
+  });
+
+  motor.on("brake", () => {
+    console.log(`automated brake on timer: ${Date.now()}`);
+  });
+
+  motor.on("forward", () => {
+    console.log(`forward: ${Date.now()}`);
+
+    // demonstrate switching to reverse after 5 seconds
+    board.wait(5000, () => motor.reverse(255));
+  });
+
+  motor.on("reverse", () => {
+    console.log(`reverse: ${Date.now()}`);
+
+    // demonstrate braking after 5 seconds
+    board.wait(5000, () => motor.brake(500));
+  });
+
+  // set the motor going forward full speed
+  motor.forward(255);
 
 });
