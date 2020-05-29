@@ -161,7 +161,7 @@
 // });
 
 var Gpio = require('onoff').Gpio;
-var stepperEnable = new Gpio(2, 'out');
+var stepperEnable = new Gpio(5, 'out');
 
 var blinkInterval = setInterval(blinkLED, 250);
 stepperEnable.writeSync(0)
