@@ -46,12 +46,11 @@ triggerPin.writeSync(1)
 wait(10)
 triggerPin.writeSync(0)
 
-echoPin.watch(function (err, value) {
+echoPin.read((err, value) => { // Asynchronous read
   if (err) {
-    console.error('There was an error', err);
-    return;
+    throw err;
   }
-  console.log(value)
+  console.log('value')
 });
 
 function wait(ms){
