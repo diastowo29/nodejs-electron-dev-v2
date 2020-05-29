@@ -73,7 +73,9 @@ var stepperEnable = gpio.export(13, {
    interval: 200,
    ready: function() {
     console.log('stepperEnable ready')
-    setInterval(stepperEnable.set(), 500);
+    setInterval(function(){
+      stepperEnable.set()
+    }, 500);
     setTimeout(stepperEnable.set(0), 1500);
    }
 });
