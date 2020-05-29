@@ -162,8 +162,8 @@
 
 var Gpio = require('onoff').Gpio;
 var stepperEnable = new Gpio(26, 'out');
-var stepperDir = new Gpio(19, 'out');
-var stepperPulse = new Gpio(13, 'out');
+var stepperDir = new Gpio(13, 'out');
+var stepperPulse = new Gpio(19, 'out');
 
 console.log('stepperDir: ' + stepperDir.readSync())
 console.log('stepperPulse: ' + stepperPulse.readSync())
