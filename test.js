@@ -103,7 +103,7 @@
 //    }
 // });
 var five = require("johnny-five");
-const {Board, Stepper, Motor} = require("johnny-five");
+const {Board, Stepper} = require("johnny-five");
 var temporal = require("temporal");
 var Raspi = require("raspi-io").RaspiIO;
 var board = new five.Board({
@@ -111,45 +111,39 @@ var board = new five.Board({
 });
 
 board.on("ready", function() {
-  const motor = new Motor({
-    pins: {
-      pwm: 13,
-      dir: 19,
-      cdir: 26
-    }
+  var events = [];
+  var stepperEnable = new five.Pin(13);
+  var stepperDir = new five.Pin(19);
+  var stepperPulse = new five.Pin(26);
+
+  stepperDir["high"]();
+  stepperPulse["high"]();
+
+  temporal.loop(500, function(loop) {
+    stepperEnable["high"]();
+    console.log('stepperEnable high')
   });
 
-  board.repl.inject({
-    motor
-  });
+  // temporal.loop(500, function(loop) {
+  //   strobe[loop.called % 2 === 0 ? "high" : "low"]();
+  // });
 
-  motor.on("start", () => {
-    console.log(`start: ${Date.now()}`);
-  });
+  // // Pin emits "high" and "low" events, whether it's
+  // // input or output.
+  // ["high", "low"].forEach(function(state) {
+  //   strobe.on(state, function() {
+  //     if (events.indexOf(state) === -1) {
+  //       console.log("Event emitted for:", state, "on", this.addr);
+  //       events.push(state);
+  //     }
+  //   });
+  // });
 
-  motor.on("stop", () => {
-    console.log(`automated stop on timer: ${Date.now()}`);
-  });
+  // var analog = new five.Pin("A0");
 
-  motor.on("brake", () => {
-    console.log(`automated brake on timer: ${Date.now()}`);
-  });
-
-  motor.on("forward", () => {
-    console.log(`forward: ${Date.now()}`);
-
-    // demonstrate switching to reverse after 5 seconds
-    board.wait(5000, () => motor.reverse(255));
-  });
-
-  motor.on("reverse", () => {
-    console.log(`reverse: ${Date.now()}`);
-
-    // demonstrate braking after 5 seconds
-    board.wait(5000, () => motor.brake(500));
-  });
-
-  // set the motor going forward full speed
-  motor.forward(255);
+  // // Query the analog pin for its current state.
+  // analog.query(function(state) {
+  //   console.log(state);
+  // });
 
 });
