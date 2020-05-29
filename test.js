@@ -161,7 +161,7 @@
 // });
 
 var Gpio = require('onoff').Gpio;
-var stepperEnable = new Gpio(26, 'out');
+var stepperEnable = new Gpio(2, 'out');
 var stepperDir = new Gpio(13, 'out');
 var stepperPulse = new Gpio(19, 'out');
 
