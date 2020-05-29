@@ -177,8 +177,7 @@ console.log('stepperPulse: ' + stepperPulse.readSync())
 var blinkInterval = setInterval(blinkLED, 250);
 
 function blinkLED() {
-  console.log('readpin')
-  console.log(stepperEnable.readSync())
+  console.log('stepperEnable: %s', stepperEnable.readSync())
   if (stepperEnable.readSync() === 0) {
     stepperEnable.writeSync(1);
   } else {
