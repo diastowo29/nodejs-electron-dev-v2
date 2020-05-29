@@ -50,7 +50,7 @@ echoPin.read((err, value) => { // Asynchronous read
   if (err) {
     throw err;
   }
-  console.log('value')
+  console.log(value)
 });
 
 function wait(ms){
