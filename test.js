@@ -160,30 +160,32 @@
 //   });
 // });
 
-var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
-var LED3 = new Gpio(13, 'out'); //use GPIO pin 4, and specify that it is output
-var LED1 = new Gpio(19, 'out'); //use GPIO pin 4, and specify that it is output
-var LED2 = new Gpio(26, 'out'); //use GPIO pin 4, and specify that it is output
+var Gpio = require('onoff').Gpio;
+var stepperEnable = new Gpio(13, 'out');
+var stepperDir = new Gpio(19, 'out');
+var stepperPulse = new Gpio(26, 'out');
 
-LED1.writeSync(1);
-LED2.writeSync(1);
+stepperDir.writeSync(1);
+stepperPulse.writeSync(1);
 var blinkInterval = setInterval(blinkLED, 250); //run the blinkLED function every 250ms
 
 function blinkLED() { //function to start blinking
 
   console.log('readpin')
-  console.log(LED3.readSync())
-  if (LED3.readSync() === 0) { //check the pin state, if the state is 0 (or off)
-    LED3.writeSync(1); //set pin state to 1 (turn LED on)
+  console.log(stepperEnable.readSync())
+  if (stepperEnable.readSync() === 0) { //check the pin state, if the state is 0 (or off)
+    stepperEnable.writeSync(1); //set pin state to 1 (turn LED on)
   } else {
-    LED3.writeSync(0); //set pin state to 0 (turn LED off)
+    stepperEnable.writeSync(0); //set pin state to 0 (turn LED off)
   }
 }
 
 function endBlink() { //function to stop blinking
   clearInterval(blinkInterval); // Stop blink intervals
-  LED3.writeSync(0); // Turn LED off
-  LED3.unexport(); // Unexport GPIO to free resources
+  stepperEnable.writeSync(0); // Turn LED off
+  stepperEnable.unexport(); // Unexport GPIO to free resources
 }
 
 setTimeout(endBlink, 5000); //stop blinking after 5 seconds
+
+process.on('SIGINT', endBlink);
