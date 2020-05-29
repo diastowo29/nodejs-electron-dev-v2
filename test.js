@@ -161,7 +161,7 @@
 // });
 
 var Gpio = require('onoff').Gpio; //include onoff to interact with the GPIO
-var LED = new Gpio(13, 'out'); //use GPIO pin 4, and specify that it is output
+var LED = new Gpio(26, 'out'); //use GPIO pin 4, and specify that it is output
 var blinkInterval = setInterval(blinkLED, 250); //run the blinkLED function every 250ms
 
 function blinkLED() { //function to start blinking
