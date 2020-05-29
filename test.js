@@ -161,7 +161,7 @@
 // });
 
 var Gpio = require('onoff').Gpio;
-var stepperEnable = new Gpio(5, 'out');
+var stepperEnable = new Gpio(3, 'out');
 
 var blinkInterval = setInterval(blinkLED, 250);
 stepperEnable.writeSync(0)
@@ -179,11 +179,7 @@ function endBlink() {
   console.log('end process')
   clearInterval(blinkInterval);
   stepperEnable.writeSync(0);
-  stepperDir.writeSync(0);
-  stepperPulse.writeSync(0);
   stepperEnable.unexport();
-  stepperDir.unexport();
-  stepperPulse.unexport();
 }
 
 setTimeout(endBlink, 5000);
