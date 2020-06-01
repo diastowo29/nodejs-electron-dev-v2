@@ -6,7 +6,12 @@ var ledPin = new Gpio(3, 'out');
 
 pinEnable.writeSync(0)
 pinDir.writeSync(1)
+
+stepCounter = 0;
+
 var blinkInterval = setInterval(blinkLED, 50);
+
+var subsidi = 3;
 
 // for (var i=0; i<1600; i++) {
 //   console.log(pinPulse.readSync());
@@ -16,16 +21,8 @@ var blinkInterval = setInterval(blinkLED, 50);
 //   wait(10)
 // }
 
-
-function wait(ms){
-   var start = new Date().getTime();
-   var end = start;
-   while(end < start + ms) {
-     end = new Date().getTime();
-  }
-}
-
 function blinkLED() {
+  stepCounter++;
   console.log('pinPulse: %s', pinPulse.readSync())
   if (pinPulse.readSync() === 0) {
     pinPulse.writeSync(1);
@@ -34,6 +31,7 @@ function blinkLED() {
     pinPulse.writeSync(0);
     ledPin.writeSync(0);
   }
+  clearInterval(blinkInterval);
 }
 
 // function endBlink() {
@@ -85,18 +83,31 @@ function blinkLED() {
 // }, 1000);
 
 
-var newKuota = 45;
-var buf = Buffer.from(newKuota.toString(), 'utf8');
-
-var newData = [];
-
-for (var i=0; i<buf.length; i++) {
-newData.push(buf[i])
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
 }
+// var newKuota = 45;
+// var buf = Buffer.from(newKuota.toString(), 'utf8');
 
-let data = [
-52,
-53
-];
-console.log(data)
-console.log(newData)
+// var newData = [];
+
+// for (var i=0; i<buf.length; i++) {
+// newData.push(buf[i])
+// }
+
+// let data = [
+// 52,
+// 53
+// ];
+// console.log(data)
+// console.log(newData)
+
+
+            var intKuota = parseInt("45");
+            var jatahSubs = parseInt('3');
+            var newKuota = intKuota - jatahSubs;
+            console.log(newKuota)
