@@ -31,7 +31,9 @@ function blinkLED() {
     pinPulse.writeSync(0);
     ledPin.writeSync(0);
   }
-  clearInterval(blinkInterval);
+  if (stepCounter == 3200) {
+    clearInterval(blinkInterval);
+  }
 }
 
 // function endBlink() {
