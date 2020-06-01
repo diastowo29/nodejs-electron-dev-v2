@@ -9,7 +9,7 @@ pinDir.writeSync(1)
 
 stepCounter = 0;
 
-var blinkInterval = setInterval(blinkLED, 10);
+// var blinkInterval = setInterval(blinkLED, 10);
 
 var subsidi = 3;
 
