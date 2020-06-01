@@ -46,9 +46,9 @@ console.log("scanning...");
 console.log("Please put chip or keycard in the antenna inductive zone!");
 console.log("Press Ctrl-C to stop.");
 
-var stepperEnable = new Gpio(13, 'out');
-var stepperDir = new Gpio(19, 'out');
-var stepperPulse = new Gpio(26, 'out');
+// var stepperEnable = new Gpio(13, 'out');
+// var stepperDir = new Gpio(19, 'out');
+// var stepperPulse = new Gpio(26, 'out');
 
 const store = new Store({
   // We'll call our data file 'user-preferences'
@@ -100,9 +100,9 @@ app.on('ready', () => {
   })
 
   mainWindow.webContents.on('did-finish-load', () => {
-    stepperDir.writeSync(1);
-    stepperPulse.writeSync(1);
-    stepperEnable.writeSync(1);
+    // stepperDir.writeSync(1);
+    // stepperPulse.writeSync(1);
+    // stepperEnable.writeSync(1);
 
     mainWindow.webContents.send('admin-data', beras);
     setInterval(function() {

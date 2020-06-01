@@ -1,12 +1,29 @@
-// var Gpio = require('onoff').Gpio;
-// var pinEnable = new Gpio(13, 'out');
-// var pinDir = new Gpio(19, 'out');
-// var pinPulse = new Gpio(26, 'out');
-// var ledPin = new Gpio(3, 'out');
+var Gpio = require('onoff').Gpio;
+var pinEnable = new Gpio(13, 'out');
+var pinDir = new Gpio(19, 'out');
+var pinPulse = new Gpio(26, 'out');
+var ledPin = new Gpio(3, 'out');
 
-// pinEnable.writeSync(1)
-// pinDir.writeSync(1)
+pinEnable.writeSync(0)
+pinDir.writeSync(1)
 // var blinkInterval = setInterval(blinkLED, 50);
+
+for (var i=0; i<1600; i++) {
+  console.log(pinPulse.readSync());
+  pinPulse.writeSync(1);
+  wait(10)
+  pinPulse.writeSync(0)
+  wait(10)
+}
+
+
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
 
 // function blinkLED() {
 //   console.log('pinPulse: %s', pinPulse.readSync())
@@ -69,17 +86,17 @@
 
 
 var newKuota = 45;
-              var buf = Buffer.from(newKuota.toString(), 'utf8');
+var buf = Buffer.from(newKuota.toString(), 'utf8');
 
-            var newData = [];
+var newData = [];
 
-            for (var i=0; i<buf.length; i++) {
-              newData.push(buf[i])
-            }
+for (var i=0; i<buf.length; i++) {
+newData.push(buf[i])
+}
 
-            let data = [
-              52,
-              53
-            ];
-            console.log(data)
-            console.log(newData)
+let data = [
+52,
+53
+];
+console.log(data)
+console.log(newData)
