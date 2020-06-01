@@ -196,6 +196,7 @@ app.on('ready', () => {
               }
 
             } else {
+              mainWindow.webContents.send('alert', 'alert');
               console.log('kurang')
             }
             var newData = [];
