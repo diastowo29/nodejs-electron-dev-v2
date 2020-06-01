@@ -13,7 +13,7 @@ stepCounter = 0;
 
 var subsidi = 3;
 
-for (var i=0; i<1600; i++) {
+for (var i=0; i<200; i++) {
   console.log('pinPulse: %s', pinPulse.readSync());
   pinPulse.writeSync(1);
   wait(10)
