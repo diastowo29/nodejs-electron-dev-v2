@@ -173,6 +173,15 @@ app.on('ready', () => {
         if (blockIndexes[i] == 4) {
           if (!isAdmin) {
             mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
+            var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
+            var jatahSubs = parseInt(beras);
+
+            if (intKuota > jatahSubs) {
+              console.log('cukup')
+            } else {
+              console.log('kurang')
+            }
+            
             var buf = Buffer.from('43', 'utf8');
 
             var newData = [];
