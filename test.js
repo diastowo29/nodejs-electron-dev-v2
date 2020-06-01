@@ -13,29 +13,30 @@ var blinkInterval = setInterval(blinkLED, 50);
 
 var subsidi = 3;
 
-// for (var i=0; i<1600; i++) {
-//   console.log(pinPulse.readSync());
-//   pinPulse.writeSync(1);
-//   wait(10)
-//   pinPulse.writeSync(0)
-//   wait(10)
-// }
-
-function blinkLED() {
-  stepCounter++;
-  console.log(stepCounter)
-  console.log('pinPulse: %s', pinPulse.readSync())
-  if (pinPulse.readSync() === 0) {
-    pinPulse.writeSync(1);
-    ledPin.writeSync(1);
-  } else {
-    pinPulse.writeSync(0);
-    ledPin.writeSync(0);
-  }
-  if (stepCounter == 3200) {
-    clearInterval(blinkInterval);
-  }
+for (var i=0; i<1600; i++) {
+  console.log('pinPulse: %s', pinPulse.readSync());
+  pinPulse.writeSync(1);
+  wait(10)
+  console.log('pinPulse: %s', pinPulse.readSync());
+  pinPulse.writeSync(0)
+  wait(10)
 }
+
+// function blinkLED() {
+//   stepCounter++;
+//   console.log(stepCounter)
+//   console.log('pinPulse: %s', pinPulse.readSync())
+//   if (pinPulse.readSync() === 0) {
+//     pinPulse.writeSync(1);
+//     ledPin.writeSync(1);
+//   } else {
+//     pinPulse.writeSync(0);
+//     ledPin.writeSync(0);
+//   }
+//   if (stepCounter == 3200) {
+//     clearInterval(blinkInterval);
+//   }
+// }
 
 // function endBlink() {
 //   console.log('end process')
