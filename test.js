@@ -70,7 +70,7 @@ setInterval(function() {
 
 // setTimeout(endBlink, 50000);
 
-process.on('SIGINT', endBlink);
+// process.on('SIGINT', endBlink);
 
 
 
