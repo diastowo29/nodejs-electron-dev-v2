@@ -24,20 +24,6 @@ console.log("scanning...");
 console.log("Please put chip or keycard in the antenna inductive zone!");
 console.log("Press Ctrl-C to stop.");
 
-let startTick;
-
-echo.on('alert', (level, tick) => {
-  console.log('alert')
-  if (level == 1) {
-    startTick = tick;
-  } else {
-    const endTick = tick;
-    const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
-    console.log(diff / 2 / MICROSECDONDS_PER_CM);
-    berasRemain = diff / 2 / MICROSECDONDS_PER_CM
-  }
-});
-
 const store = new Store({
   // We'll call our data file 'user-preferences'
   configName: 'user-preferences',
@@ -89,7 +75,6 @@ app.on('ready', () => {
 
   mainWindow.webContents.on('did-finish-load', () => {
 
-
     mainWindow.webContents.send('admin-data', beras);
     trigger.digitalWrite(0); // Make sure trigger is low
 
@@ -100,6 +85,20 @@ app.on('ready', () => {
       //# reset card
       mfrc522.reset();
       trigger.trigger(10, 1);
+
+      let startTick;
+
+      echo.on('alert', (level, tick) => {
+        console.log('alert')
+        if (level == 1) {
+          startTick = tick;
+        } else {
+          const endTick = tick;
+          const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+          console.log(diff / 2 / MICROSECDONDS_PER_CM);
+          berasRemain = diff / 2 / MICROSECDONDS_PER_CM
+        }
+      });
 
       //# Scan for cards
       let response = mfrc522.findCard();
