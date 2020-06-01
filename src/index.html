@@ -49,12 +49,17 @@
 	    $('#userKuota').text('Sisa kuota beras anda: ' + parseInt(store) + ' Kg')
 	});
 
+	ipcRenderer.on('alert', function (event,store) {
+	    $('#userKuota').text('Kuota beras anda tidak mencukupi..')
+	});
+
 	ipcRenderer.on('admin-data', function (event,store) {
 		$('#berasKuota').text(store)
 		berasCount = parseInt($('#berasKuota').text());
 	});
 
 	ipcRenderer.on('role-data', function (event,store) {
+		console.log(store)
 		if (store == 'admin') {
 			$('#admindiv').show()
 			$('#userdiv').hide()

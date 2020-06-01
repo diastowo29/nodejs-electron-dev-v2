@@ -239,8 +239,10 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.on('kuota', function(event, data) {
+  console.log(data)
   store.set('windowBounds', { beras: data });
   beras = data
+  console.log(beras)
 });
 
 function wait(ms){
