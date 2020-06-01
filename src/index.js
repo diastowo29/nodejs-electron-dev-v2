@@ -24,20 +24,19 @@ console.log("scanning...");
 console.log("Please put chip or keycard in the antenna inductive zone!");
 console.log("Press Ctrl-C to stop.");
 
-const watchHCSR04 = () => {
-  let startTick;
+let startTick;
 
-  echo.on('alert', (level, tick) => {
-    if (level == 1) {
-      startTick = tick;
-    } else {
-      const endTick = tick;
-      const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
-      console.log(diff / 2 / MICROSECDONDS_PER_CM);
-      berasRemain = diff / 2 / MICROSECDONDS_PER_CM
-    }
-  });
-};
+echo.on('alert', (level, tick) => {
+  console.log('alert')
+  if (level == 1) {
+    startTick = tick;
+  } else {
+    const endTick = tick;
+    const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+    console.log(diff / 2 / MICROSECDONDS_PER_CM);
+    berasRemain = diff / 2 / MICROSECDONDS_PER_CM
+  }
+});
 
 const store = new Store({
   // We'll call our data file 'user-preferences'
@@ -96,7 +95,7 @@ app.on('ready', () => {
 
     
 
-    watchHCSR04();
+    // watchHCSR04();
     setInterval(function() {
       //# reset card
       mfrc522.reset();
