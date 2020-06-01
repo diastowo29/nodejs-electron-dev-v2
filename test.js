@@ -7,6 +7,9 @@ var Gpio = require('onoff').Gpio;
 var trigger = new Gpio(23, 'out');
 var echo = new Gpio(24, 'in', 'both');
 
+var timeTick;
+var timeTock;
+
 trigger.writeSync(0)
 
 echo.watch((err, value) => {
@@ -14,6 +17,12 @@ echo.watch((err, value) => {
     throw err;
   }
   console.log(value);
+  if (value == 1) {
+    timeTock = new Date().getTime()
+  }
+  console.log(timeTick)
+  console.log(timeTock)
+  console.log(timeTick - timeTock)
 });
 
 setInterval(function() {
@@ -22,6 +31,7 @@ setInterval(function() {
     trigger.writeSync(0)
   } else {
     trigger.writeSync(1)
+    timeTick = new Date().getTime();
   }
 }, 1000)
 
@@ -152,3 +162,6 @@ function wait(ms){
             // var jatahSubs = parseInt('3');
             // var newKuota = intKuota - jatahSubs;
             // console.log(newKuota)
+
+var timeNow = new Date().getTime()
+console.log(timeNow);
