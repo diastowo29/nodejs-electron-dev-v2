@@ -9,7 +9,7 @@
 	<script src="js/jquery-3.5.1.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
-  <body>
+  <body style="background-image: url('garuda.png');">
     <h1 id="hello">Bank Beras!</h1>
     <p>Silahkan tempelkan Kartu anda.</p>
     <div class="container">
@@ -86,7 +86,9 @@
 	}
 
 	function saveSubsidi () {
-		console.log($('#berasKuota').text())
+		$('#admindiv').hide()
+		$('#userdiv').show()
+		$('#userKuota').text('Terima kasih, perubahan telah tersimpan');
 		ipcRenderer.send('kuota', $('#berasKuota').text());
 	}
 

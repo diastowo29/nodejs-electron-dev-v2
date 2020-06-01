@@ -36,7 +36,6 @@ const store = new Store({
 
 trigger.digitalWrite(0); // Make sure trigger is low
 
-
 setInterval(function() {
   console.log('trigger')
   trigger.trigger(10, 1); // Set trigger high for 10 microseconds
