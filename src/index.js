@@ -37,10 +37,10 @@ const store = new Store({
 });
 
 const softSPI = new SoftSPI({
-  clock: 23, // pin number of SCLK
-  mosi: 19, // pin number of MOSI
-  miso: 21, // pin number of MISO
-  client: 24 // pin number of CS
+  clock: 11, // 23 pin number of SCLK
+  mosi: 10, // 19 pin number of MOSI
+  miso: 9, // 21 pin number of MISO
+  client: 8 // 24 pin number of CS
 });
 
 // GPIO 24 can be used for buzzer bin (PIN 18), Reset pin is (PIN 22).
@@ -170,6 +170,7 @@ app.on('ready', () => {
             mainWindow.webContents.send('role-data', "admin");
           } else {
             console.log('this is not admin')
+            mainWindow.webContents.send('role-data', "user");
             isAdmin = false
           }
         }
@@ -236,7 +237,8 @@ app.on('window-all-closed', () => {
 });
 
 ipcMain.on('kuota', function(event, data) {
-      store.set('windowBounds', { beras: data });
+  store.set('windowBounds', { beras: data });
+  beras = data
 });
 
 function wait(ms){
