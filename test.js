@@ -6,15 +6,15 @@ var ledPin = new Gpio(3, 'out');
 
 pinEnable.writeSync(0)
 pinDir.writeSync(1)
-// var blinkInterval = setInterval(blinkLED, 50);
+var blinkInterval = setInterval(blinkLED, 50);
 
-for (var i=0; i<1600; i++) {
-  console.log(pinPulse.readSync());
-  pinPulse.writeSync(1);
-  wait(10)
-  pinPulse.writeSync(0)
-  wait(10)
-}
+// for (var i=0; i<1600; i++) {
+//   console.log(pinPulse.readSync());
+//   pinPulse.writeSync(1);
+//   wait(10)
+//   pinPulse.writeSync(0)
+//   wait(10)
+// }
 
 
 function wait(ms){
@@ -25,16 +25,16 @@ function wait(ms){
   }
 }
 
-// function blinkLED() {
-//   console.log('pinPulse: %s', pinPulse.readSync())
-//   if (pinPulse.readSync() === 0) {
-//     pinPulse.writeSync(1);
-//     ledPin.writeSync(1);
-//   } else {
-//     pinPulse.writeSync(0);
-//     ledPin.writeSync(0);
-//   }
-// }
+function blinkLED() {
+  console.log('pinPulse: %s', pinPulse.readSync())
+  if (pinPulse.readSync() === 0) {
+    pinPulse.writeSync(1);
+    ledPin.writeSync(1);
+  } else {
+    pinPulse.writeSync(0);
+    ledPin.writeSync(0);
+  }
+}
 
 // function endBlink() {
 //   console.log('end process')
