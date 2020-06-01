@@ -18,6 +18,7 @@ const MICROSECDONDS_PER_CM = 1e6/34321;
 
 const trigger = new piGpio(23, {mode: Gpio.OUTPUT});
 const echo = new piGpio(24, {mode: Gpio.INPUT, alert: true});
+let startTick;
 
 //# This loop keeps checking for chips. If one is near it will get the UID and authenticate
 console.log("scanning...");
@@ -78,27 +79,18 @@ app.on('ready', () => {
     mainWindow.webContents.send('admin-data', beras);
     trigger.digitalWrite(0); // Make sure trigger is low
 
-    
+
+    setInterval(() => {
+      console.log('trigger')
+      trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+    }, 1000);
+
 
     // watchHCSR04();
     setInterval(function() {
       //# reset card
       mfrc522.reset();
-      trigger.trigger(10, 1);
 
-      let startTick;
-
-      echo.on('alert', (level, tick) => {
-        console.log('alert')
-        if (level == 1) {
-          startTick = tick;
-        } else {
-          const endTick = tick;
-          const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
-          console.log(diff / 2 / MICROSECDONDS_PER_CM);
-          berasRemain = diff / 2 / MICROSECDONDS_PER_CM
-        }
-      });
 
       //# Scan for cards
       let response = mfrc522.findCard();
@@ -198,7 +190,7 @@ app.on('ready', () => {
 
       //# Stop
       mfrc522.stopCrypto();
-    }, 1000);
+    }, 500);
   })
 })
 
@@ -225,3 +217,15 @@ function wait(ms){
      end = new Date().getTime();
   }
 }
+
+echo.on('alert', (level, tick) => {
+  console.log('alert')
+  if (level == 1) {
+    startTick = tick;
+  } else {
+    const endTick = tick;
+    const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+    console.log(diff / 2 / MICROSECDONDS_PER_CM);
+    berasRemain = diff / 2 / MICROSECDONDS_PER_CM
+  }
+});
