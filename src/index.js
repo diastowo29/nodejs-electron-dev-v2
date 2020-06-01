@@ -24,6 +24,21 @@ console.log("scanning...");
 console.log("Please put chip or keycard in the antenna inductive zone!");
 console.log("Press Ctrl-C to stop.");
 
+const watchHCSR04 = () => {
+  let startTick;
+
+  echo.on('alert', (level, tick) => {
+    if (level == 1) {
+      startTick = tick;
+    } else {
+      const endTick = tick;
+      const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+      console.log(diff / 2 / MICROSECDONDS_PER_CM);
+      berasRemain = diff / 2 / MICROSECDONDS_PER_CM
+    }
+  });
+};
+
 const store = new Store({
   // We'll call our data file 'user-preferences'
   configName: 'user-preferences',
@@ -79,20 +94,7 @@ app.on('ready', () => {
     mainWindow.webContents.send('admin-data', beras);
     trigger.digitalWrite(0); // Make sure trigger is low
 
-    const watchHCSR04 = () => {
-      let startTick;
-
-      echo.on('alert', (level, tick) => {
-        if (level == 1) {
-          startTick = tick;
-        } else {
-          const endTick = tick;
-          const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
-          console.log(diff / 2 / MICROSECDONDS_PER_CM);
-          berasRemain = diff / 2 / MICROSECDONDS_PER_CM
-        }
-      });
-    };
+    
 
     watchHCSR04();
     setInterval(function() {
