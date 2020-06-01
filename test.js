@@ -19,10 +19,10 @@ echo.watch((err, value) => {
   console.log(value);
   if (value == 1) {
     timeTock = new Date().getTime()
+    console.log(timeTick)
+    console.log(timeTock)
+    console.log(timeTick - timeTock)
   }
-  console.log(timeTick)
-  console.log(timeTock)
-  console.log(timeTick - timeTock)
 });
 
 setInterval(function() {
