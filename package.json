@@ -1,6 +1,6 @@
 {
-  "name": "tap-beras",
-  "productName": "tap-beras",
+  "name": "testappv3",
+  "productName": "testappv3",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": "src/index.js",
