@@ -68,6 +68,7 @@ const MICROSECDONDS_PER_CM = 1e6/34321;
 const trigger = new piGpio(23, {mode: Gpio.OUTPUT});
 const echo = new piGpio(24, {mode: Gpio.INPUT, alert: true});
 
+console.log('watch')
 trigger.digitalWrite(0); // Make sure trigger is low
 
 const watchHCSR04 = () => {
