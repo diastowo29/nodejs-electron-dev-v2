@@ -10,6 +10,8 @@ var pinEnable = new Gpio(13, 'out');
 var pinDir = new Gpio(19, 'out');
 var pinPulse = new Gpio(21, 'out');
 
+app.commandLine.appendSwitch('--no-sandbox')
+
 const piGpio = require('pigpio').Gpio;
 
 // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
