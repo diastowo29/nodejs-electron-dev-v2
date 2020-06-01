@@ -18,7 +18,11 @@ echo.watch((err, value) => {
 
 setInterval(function() {
   console.log('setting triger')
-  trigger.writeSync(1)
+  if (trigger.readSync() == 1) {
+    trigger.writeSync(0)
+  } else {
+    trigger.writeSync(1)
+  }
 }, 1000)
 
 // pinEnable.writeSync(0)
