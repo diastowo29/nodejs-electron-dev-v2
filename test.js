@@ -23,6 +23,7 @@ var subsidi = 3;
 
 function blinkLED() {
   stepCounter++;
+  console.log(stepCounter)
   console.log('pinPulse: %s', pinPulse.readSync())
   if (pinPulse.readSync() === 0) {
     pinPulse.writeSync(1);
