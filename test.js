@@ -65,8 +65,8 @@ const piGpio = require('pigpio').Gpio;
 // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
 const MICROSECDONDS_PER_CM = 1e6/34321;
 
-const trigger = new piGpio(23, {mode: Gpio.OUTPUT});
-const echo = new piGpio(24, {mode: Gpio.INPUT, alert: true});
+const trigger = new piGpio(23, {mode: piGpio.OUTPUT});
+const echo = new piGpio(24, {mode: piGpio.INPUT, alert: true});
 
 trigger.digitalWrite(0); // Make sure trigger is low
 
