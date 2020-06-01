@@ -34,6 +34,14 @@ const store = new Store({
   }
 });
 
+trigger.digitalWrite(0); // Make sure trigger is low
+
+
+setInterval(function() {
+  console.log('trigger')
+  trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+}, 1000);
+
 const softSPI = new SoftSPI({
   clock: 23, // 23 pin number of SCLK
   mosi: 19, // 19 pin number of MOSI
@@ -77,13 +85,7 @@ app.on('ready', () => {
   mainWindow.webContents.on('did-finish-load', () => {
 
     mainWindow.webContents.send('admin-data', beras);
-    trigger.digitalWrite(0); // Make sure trigger is low
 
-
-    setInterval(() => {
-      console.log('trigger')
-      trigger.trigger(10, 1); // Set trigger high for 10 microseconds
-    }, 1000);
 
 
     // watchHCSR04();
