@@ -6,6 +6,10 @@ const Store = require('./store.js');
 const ipcMain = require('electron').ipcMain;
 var Gpio = require('onoff').Gpio;
 
+var pinEnable = new Gpio(13, 'out');
+var pinDir = new Gpio(19, 'out');
+var pinPulse = new Gpio(26, 'out');
+
 const piGpio = require('pigpio').Gpio;
 
 // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
@@ -178,35 +182,35 @@ app.on('ready', () => {
 
             if (intKuota > jatahSubs) {
               console.log('cukup')
+              var newKuota = intKuota - jatahSubs;
+              var buf = Buffer.from(newKuota.toString(), 'utf8');
+              
+              console.log("STEPPER ROTATING");
+              pinEnable.writeSync(0)
+              pinDir.writeSync(1)
+              for (var i=0; i<(jatahSubs*1600); i++) {
+                pinPulse.writeSync(1);
+                wait(10);
+                pinPulse.writeSync(0)
+                wait(10);
+              }
+
             } else {
               console.log('kurang')
             }
-            
-            var buf = Buffer.from('43', 'utf8');
-
             var newData = [];
 
             for (var i=0; i<buf.length; i++) {
               newData.push(buf[i])
             }
 
-            let data = [
-              52,
-              53
-            ];
-
-            /*if(bufferOriginal => jatahkuota){
-              digitalWrite(gpio26, HIGH);
-              digitalWrite(gpio19, HIGH);
-              for(int i=0, i<(jatahkuota*1600)){
-                digitalWrite(gpio13, HIGH);
-                delay(2);
-                digitalWrite(gpio13, LOW);
-                delay(2);
-              }
-            }*/
-
-            mfrc522.writeDataToBlock(4, data)
+            // let data = [
+            //   52,
+            //   53
+            // ];
+            // console.log(data)
+            console.log(newData)
+            mfrc522.writeDataToBlock(4, newData)
           }
         }
 
@@ -230,3 +234,11 @@ app.on('window-all-closed', () => {
 ipcMain.on('kuota', function(event, data) {
       store.set('windowBounds', { beras: data });
 });
+
+function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
