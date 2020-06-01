@@ -8,7 +8,7 @@ var Gpio = require('onoff').Gpio;
 
 var pinEnable = new Gpio(13, 'out');
 var pinDir = new Gpio(19, 'out');
-var pinPulse = new Gpio(26, 'out');
+var pinPulse = new Gpio(21, 'out');
 
 const piGpio = require('pigpio').Gpio;
 
@@ -17,29 +17,6 @@ const MICROSECDONDS_PER_CM = 1e6/34321;
 
 const trigger = new piGpio(23, {mode: Gpio.OUTPUT});
 const echo = new piGpio(24, {mode: Gpio.INPUT, alert: true});
-
-trigger.digitalWrite(0); // Make sure trigger is low
-
-const watchHCSR04 = () => {
-  let startTick;
-
-  echo.on('alert', (level, tick) => {
-    if (level == 1) {
-      startTick = tick;
-    } else {
-      const endTick = tick;
-      const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
-      console.log(diff / 2 / MICROSECDONDS_PER_CM);
-    }
-  });
-};
-
-watchHCSR04();
-
-// Trigger a distance measurement once per second
-setInterval(() => {
-  trigger.trigger(10, 1); // Set trigger high for 10 microseconds
-}, 1000);
 
 //# This loop keeps checking for chips. If one is near it will get the UID and authenticate
 console.log("scanning...");
@@ -104,7 +81,31 @@ app.on('ready', () => {
     // stepperPulse.writeSync(1);
     // stepperEnable.writeSync(1);
 
+
     mainWindow.webContents.send('admin-data', beras);
+    trigger.digitalWrite(0); // Make sure trigger is low
+
+    const watchHCSR04 = () => {
+      let startTick;
+
+      echo.on('alert', (level, tick) => {
+        if (level == 1) {
+          startTick = tick;
+        } else {
+          const endTick = tick;
+          const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
+          console.log(diff / 2 / MICROSECDONDS_PER_CM);
+        }
+      });
+    };
+
+    watchHCSR04();
+
+    // Trigger a distance measurement once per second
+    setInterval(() => {
+      trigger.trigger(10, 1); // Set trigger high for 10 microseconds
+    }, 1000);
+    
     setInterval(function() {
       //# reset card
       mfrc522.reset();
@@ -188,11 +189,13 @@ app.on('ready', () => {
               console.log("STEPPER ROTATING");
               pinEnable.writeSync(0)
               pinDir.writeSync(1)
-              for (var i=0; i<(jatahSubs*1600); i++) {
+              for (var i=0; i<(jatahSubs*200); i++) {
+                console.log('pinPulse: %s', pinPulse.readSync());
                 pinPulse.writeSync(1);
-                wait(10);
+                wait(10)
+                console.log('pinPulse: %s', pinPulse.readSync());
                 pinPulse.writeSync(0)
-                wait(10);
+                wait(10)
               }
 
             } else {
