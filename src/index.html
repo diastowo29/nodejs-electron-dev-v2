@@ -2,7 +2,7 @@
 <html>
   <head>
   	<meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Tap Beras</title>
     <link rel="stylesheet" href="styles/index.css">
 	<link rel="stylesheet" href="styles/bootstrap.min.css">
 	<script src="js/bootstrap.min.js"></script>
@@ -50,7 +50,11 @@
 	});
 
 	ipcRenderer.on('alert', function (event,store) {
-	    $('#userKuota').text('Kuota beras anda tidak mencukupi..')
+		if (store == 'beras-alert') {
+			$('#userKuota').text('Beras hampir habis..')
+		} else {
+			$('#userKuota').text('Kuota beras anda tidak mencukupi..')
+		}
 	});
 
 	ipcRenderer.on('admin-data', function (event,store) {

@@ -10,9 +10,8 @@ var pinEnable = new Gpio(13, 'out');
 var pinDir = new Gpio(19, 'out');
 var pinPulse = new Gpio(21, 'out');
 
-app.commandLine.appendSwitch('--no-sandbox')
-
 const piGpio = require('pigpio').Gpio;
+var berasRemain = 0;
 
 // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
 const MICROSECDONDS_PER_CM = 1e6/34321;
@@ -24,10 +23,6 @@ const echo = new piGpio(24, {mode: Gpio.INPUT, alert: true});
 console.log("scanning...");
 console.log("Please put chip or keycard in the antenna inductive zone!");
 console.log("Press Ctrl-C to stop.");
-
-// var stepperEnable = new Gpio(13, 'out');
-// var stepperDir = new Gpio(19, 'out');
-// var stepperPulse = new Gpio(26, 'out');
 
 const store = new Store({
   // We'll call our data file 'user-preferences'
@@ -79,9 +74,6 @@ app.on('ready', () => {
   })
 
   mainWindow.webContents.on('did-finish-load', () => {
-    // stepperDir.writeSync(1);
-    // stepperPulse.writeSync(1);
-    // stepperEnable.writeSync(1);
 
 
     mainWindow.webContents.send('admin-data', beras);
@@ -97,44 +89,32 @@ app.on('ready', () => {
           const endTick = tick;
           const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
           console.log(diff / 2 / MICROSECDONDS_PER_CM);
+          berasRemain = diff / 2 / MICROSECDONDS_PER_CM
         }
       });
     };
 
     watchHCSR04();
-
-    // Trigger a distance measurement once per second
-    setInterval(() => {
-      trigger.trigger(10, 1); // Set trigger high for 10 microseconds
-    }, 1000);
-    
     setInterval(function() {
       //# reset card
       mfrc522.reset();
+      trigger.trigger(10, 1);
 
       //# Scan for cards
       let response = mfrc522.findCard();
       if (!response.status) {
-        // mainWindow.webContents.send('store-data', 'No Card');
-        console.log("No Card");
+        // console.log("No Card");
         return;
       }
-      // mainWindow.webContents.send('store-data', 'Card detected, CardType: ' + response.bitSize);
       console.log("Card detected, CardType: " + response.bitSize);
 
       //# Get the UID of the card
       response = mfrc522.getUid();
       if (!response.status) {
         console.log("UID Scan Error");
-        // mainWindow.webContents.send('store-data', 'UID Scan Error');
         return;
       }
-      //# If we have the UID, continue
       const uid = response.data;
-      // mainWindow.webContents.send('store-data', uid[0].toString(16));
-      // mainWindow.webContents.send('store-data', uid[1].toString(16));
-      // mainWindow.webContents.send('store-data', uid[2].toString(16));
-      // mainWindow.webContents.send('store-data', uid[3].toString(16));
       console.log(
         "Card read UID: %s %s %s %s",
         uid[0].toString(16),
@@ -145,7 +125,6 @@ app.on('ready', () => {
 
       //# Select the scanned card
       const memoryCapacity = mfrc522.selectCard(uid);
-      // mainWindow.webContents.send('store-data', "Card Memory Capacity: " + memoryCapacity);
       console.log("Card Memory Capacity: " + memoryCapacity);
 
       //# This is the default key for authentication
@@ -157,7 +136,6 @@ app.on('ready', () => {
       for (var i=0; i<blockIndexes.length; i++) {
         if (!mfrc522.authenticate(blockIndexes[i], key, uid)) {
           console.log("Authentication Error");
-          // mainWindow.webContents.send('store-data', "Authentication Error");
           return;
         }
 
@@ -180,44 +158,39 @@ app.on('ready', () => {
 
         if (blockIndexes[i] == 4) {
           if (!isAdmin) {
-            mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
-            var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
-            var jatahSubs = parseInt(beras);
-
-            if (intKuota > jatahSubs) {
-              console.log('cukup')
-              var newKuota = intKuota - jatahSubs;
-              var buf = Buffer.from(newKuota.toString(), 'utf8');
-              
-              console.log("STEPPER ROTATING");
-              pinEnable.writeSync(0)
-              pinDir.writeSync(1)
-              for (var i=0; i<(jatahSubs*200); i++) {
-                console.log('pinPulse: %s', pinPulse.readSync());
-                pinPulse.writeSync(1);
-                wait(10)
-                console.log('pinPulse: %s', pinPulse.readSync());
-                pinPulse.writeSync(0)
-                wait(10)
-              }
-
+            if (berasRemain > 50) {
+              mainWindow.webContents.send('alert', 'beras-alert');
             } else {
-              mainWindow.webContents.send('alert', 'alert');
-              console.log('kurang')
-            }
-            var newData = [];
+              mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
+              var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
+              var jatahSubs = parseInt(beras);
 
-            for (var i=0; i<buf.length; i++) {
-              newData.push(buf[i])
-            }
+              if (intKuota > jatahSubs) {
+                console.log('cukup')
+                var newKuota = intKuota - jatahSubs;
+                mfrc522.writeDataToBlock(4, newData)
+                var buf = Buffer.from(newKuota.toString(), 'utf8');
+                
+                console.log("STEPPER ROTATING");
+                pinEnable.writeSync(0)
+                pinDir.writeSync(1)
+                for (var i=0; i<(jatahSubs*200); i++) {
+                  pinPulse.writeSync(1);
+                  wait(10)
+                  pinPulse.writeSync(0)
+                  wait(10)
+                }
 
-            // let data = [
-            //   52,
-            //   53
-            // ];
-            // console.log(data)
-            console.log(newData)
-            mfrc522.writeDataToBlock(4, newData)
+              } else {
+                mainWindow.webContents.send('alert', 'alert');
+                console.log('kurang')
+              }
+              var newData = [];
+
+              for (var i=0; i<buf.length; i++) {
+                newData.push(buf[i])
+              }
+            }
           }
         }
 
@@ -225,7 +198,7 @@ app.on('ready', () => {
 
       //# Stop
       mfrc522.stopCrypto();
-    }, 500);
+    }, 1000);
   })
 })
 
