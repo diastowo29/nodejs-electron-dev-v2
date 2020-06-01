@@ -5,7 +5,7 @@ var Gpio = require('onoff').Gpio;
 // var ledPin = new Gpio(3, 'out');
 
 var trigger = new Gpio(23, 'out');
-var echo = new Gpio(24, 'in', 'falling');
+var echo = new Gpio(24, 'in', 'rising');
 
 var timeTick;
 var timeTock;
