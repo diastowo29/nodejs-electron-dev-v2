@@ -13,6 +13,8 @@ var pinPulse = new Gpio(21, 'out');
 const piGpio = require('pigpio').Gpio;
 var berasRemain = 0;
 
+pinEnable.writeSync(1);
+
 // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
 const MICROSECDONDS_PER_CM = 1e6/34321;
 
@@ -193,6 +195,7 @@ app.on('ready', () => {
                   pinPulse.writeSync(0)
                   wait(10)
                 }
+                pinEnable.writeSync(1)
 
               } else {
                 mainWindow.webContents.send('alert', 'alert');
