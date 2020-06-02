@@ -54,12 +54,12 @@
 	ipcRenderer.on('alert', function (event,store) {
 		if (store == 'beras-alert') {
 			$('#userKuota').text('Beras hampir habis..')
-			wait(5000)
-			$('#userKuota').text('')
+			// wait(5000)
+			// $('#userKuota').text('')
 		} else {
 			$('#userKuota').text('Kuota beras anda tidak mencukupi..')
-			wait(5000)
-			$('#userKuota').text('')
+			// wait(5000)
+			// $('#userKuota').text('')
 		}
 	});
 
