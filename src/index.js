@@ -105,8 +105,6 @@ app.on('ready', () => {
       //# reset card
       mfrc522.reset();
 
-      let { beras } = store.get('windowBounds');
-      mainWindow.webContents.send('admin-data', beras);
       //# Scan for cards
       let response = mfrc522.findCard();
       if (!response.status) {
@@ -155,6 +153,7 @@ app.on('ready', () => {
             console.log('this is admin')
             isAdmin = true
             mainWindow.webContents.send('role-data', "admin");
+            mainWindow.webContents.send('admin-data', beras);
           } else {
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
