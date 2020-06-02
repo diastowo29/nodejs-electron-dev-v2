@@ -165,6 +165,7 @@ function wait(ms){
 // console.log(timeNow);
 
 const Mfrc522 = require("mfrc522-rpi");
+const SoftSPI = require("rpi-softspi");
 
 const softSPI = new SoftSPI({
   clock: 23, // 23 pin number of SCLK
