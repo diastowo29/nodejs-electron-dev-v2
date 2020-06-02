@@ -175,6 +175,7 @@ app.on('ready', () => {
               if (intKuota > jatahSubs) {
                 console.log('cukup')
                 var newKuota = intKuota - jatahSubs;
+                mainWindow.webContents.send('store-data', newKuota);
                 var buf = Buffer.from(newKuota.toString(), 'utf8');
                 var newData = [];
 

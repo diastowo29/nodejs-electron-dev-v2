@@ -88,7 +88,7 @@
 	function saveSubsidi () {
 		$('#admindiv').hide()
 		$('#userdiv').show()
-		$('#userKuota').text('Terima kasih, perubahan telah tersimpan');
+		$('#userKuota').text('Sisa kuota beras anda: 0 Kg');
 		ipcRenderer.send('kuota', $('#berasKuota').text());
 	}
 
