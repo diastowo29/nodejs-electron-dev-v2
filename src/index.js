@@ -66,7 +66,7 @@ const softSPI = new SoftSPI({
 
 // GPIO 24 can be used for buzzer bin (PIN 18), Reset pin is (PIN 22).
 // I believe that channing pattern is better for configuring pins which are optional methods to use.
-const mfrc522 = new Mfrc522(softSPI).setResetPin(22).setBuzzerPin(20);
+const mfrc522 = new Mfrc522(softSPI).setResetPin(22);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
