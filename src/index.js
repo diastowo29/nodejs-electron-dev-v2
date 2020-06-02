@@ -17,7 +17,7 @@ var berasRemain = 0;
 const MICROSECDONDS_PER_CM = 1e6/34321;
 
 const trigger = new piGpio(23, {mode: Gpio.OUTPUT});
-const echo = new piGpio(24, {mode: Gpio.INPUT, alert: true});
+const echo = new piGpio(27, {mode: Gpio.INPUT, alert: true});
 
 console.log('watch')
 trigger.digitalWrite(0); // Make sure trigger is low
@@ -58,10 +58,10 @@ const store = new Store({
 });
 
 const softSPI = new SoftSPI({
-  clock: 11, // 23 pin number of SCLK
-  mosi: 10, // 19 pin number of MOSI
-  miso: 9, // 21 pin number of MISO
-  client: 8 // 24 pin number of CS
+  clock: 23, // 23 pin number of SCLK
+  mosi: 19, // 19 pin number of MOSI
+  miso: 21, // 21 pin number of MISO
+  client: 24 // 24 pin number of CS
 });
 
 // GPIO 24 can be used for buzzer bin (PIN 18), Reset pin is (PIN 22).
