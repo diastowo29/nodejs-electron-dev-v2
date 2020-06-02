@@ -10,8 +10,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body style="background-image: url('garuda.png');">
-    <h1 id="hello">Bank Beras!</h1>
-    <p>Silahkan tempelkan Kartu anda.</p>
+  	<div style="width: 100%; text-align: center;">
+	    <h1 id="hello">Bank Beras!</h1>
+	    <p>Silahkan tempelkan Kartu anda.</p>
+  	</div>
     <div class="container">
     	<div id="userdiv">
     		<p id="userKuota">Sisa kuota beras anda: 0 Kg</p>
@@ -52,8 +54,12 @@
 	ipcRenderer.on('alert', function (event,store) {
 		if (store == 'beras-alert') {
 			$('#userKuota').text('Beras hampir habis..')
+			wait(5000)
+			$('#userKuota').text('')
 		} else {
 			$('#userKuota').text('Kuota beras anda tidak mencukupi..')
+			wait(5000)
+			$('#userKuota').text('')
 		}
 	});
 
@@ -88,8 +94,17 @@
 	function saveSubsidi () {
 		$('#admindiv').hide()
 		$('#userdiv').show()
-		$('#userKuota').text('Sisa kuota beras anda: 0 Kg');
+		$('#userKuota').text('');
 		ipcRenderer.send('kuota', $('#berasKuota').text());
+	}
+
+
+	function wait(ms){
+	   var start = new Date().getTime();
+	   var end = start;
+	   while(end < start + ms) {
+	     end = new Date().getTime();
+	  }
 	}
 
   </script>

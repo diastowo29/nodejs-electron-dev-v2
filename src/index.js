@@ -105,7 +105,8 @@ app.on('ready', () => {
       //# reset card
       mfrc522.reset();
 
-
+      let { beras } = store.get('windowBounds');
+      mainWindow.webContents.send('admin-data', beras);
       //# Scan for cards
       let response = mfrc522.findCard();
       if (!response.status) {
