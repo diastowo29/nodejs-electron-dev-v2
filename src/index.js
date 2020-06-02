@@ -96,7 +96,7 @@ app.on('ready', () => {
 
   mainWindow.webContents.on('did-finish-load', () => {
 
-    mainWindow.webContents.send('admin-data', beras);
+    // mainWindow.webContents.send('admin-data', beras);
 
 
 
