@@ -196,7 +196,7 @@ app.on('ready', () => {
                   wait(10)
                 }
                 pinEnable.writeSync(1)
-
+                mainWindow.webContents.send('clear', 'alert');
               } else {
                 mainWindow.webContents.send('alert', 'alert');
                 console.log('kurang')

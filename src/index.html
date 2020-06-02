@@ -63,6 +63,10 @@
 		}
 	});
 
+	ipcRenderer.on('clear', function (event,store) {
+		$('#userKuota').text('')
+	});
+
 	ipcRenderer.on('admin-data', function (event,store) {
 		$('#berasKuota').text(store)
 		berasCount = parseInt($('#berasKuota').text());
