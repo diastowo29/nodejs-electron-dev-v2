@@ -13,38 +13,11 @@ var pinPulse = new Gpio(21, 'out');
 const piGpio = require('pigpio').Gpio;
 var berasRemain = 0;
 
-//# This loop keeps checking for chips. If one is near it will get the UID and authenticate
-console.log("scanning...");
-console.log("Please put chip or keycard in the antenna inductive zone!");
-console.log("Press Ctrl-C to stop.");
-
-const store = new Store({
-  // We'll call our data file 'user-preferences'
-  configName: 'user-preferences',
-  defaults: {
-    // 800x600 is the default size of our window
-    windowBounds: { beras: 2 }
-  }
-});
-
-const softSPI = new SoftSPI({
-  clock: 23, // 23 pin number of SCLK
-  mosi: 19, // 19 pin number of MOSI
-  miso: 21, // 21 pin number of MISO
-  client: 18 // 24 pin number of CS
-});
-
-// GPIO 24 can be used for buzzer bin (PIN 18), Reset pin is (PIN 22).
-// I believe that channing pattern is better for configuring pins which are optional methods to use.
-const mfrc522 = new Mfrc522(softSPI).setResetPin(22).setBuzzerPin(18);
-
-
-const trigger = new piGpio(23, {mode: Gpio.OUTPUT});
-const echo = new piGpio(27, {mode: Gpio.INPUT, alert: true});
-
 // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
 const MICROSECDONDS_PER_CM = 1e6/34321;
 
+const trigger = new piGpio(23, {mode: Gpio.OUTPUT});
+const echo = new piGpio(27, {mode: Gpio.INPUT, alert: true});
 
 console.log('watch')
 trigger.digitalWrite(0); // Make sure trigger is low
@@ -69,6 +42,31 @@ echo.on('alert', (level, tick) => {
 setInterval(() => {
   trigger.trigger(10, 1); // Set trigger high for 10 microseconds
 }, 1000);
+
+//# This loop keeps checking for chips. If one is near it will get the UID and authenticate
+console.log("scanning...");
+console.log("Please put chip or keycard in the antenna inductive zone!");
+console.log("Press Ctrl-C to stop.");
+
+const store = new Store({
+  // We'll call our data file 'user-preferences'
+  configName: 'user-preferences',
+  defaults: {
+    // 800x600 is the default size of our window
+    windowBounds: { beras: 2 }
+  }
+});
+
+const softSPI = new SoftSPI({
+  clock: 23, // 23 pin number of SCLK
+  mosi: 19, // 19 pin number of MOSI
+  miso: 21, // 21 pin number of MISO
+  client: 24 // 24 pin number of CS
+});
+
+// GPIO 24 can be used for buzzer bin (PIN 18), Reset pin is (PIN 22).
+// I believe that channing pattern is better for configuring pins which are optional methods to use.
+const mfrc522 = new Mfrc522(softSPI).setResetPin(22).setBuzzerPin(20);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
