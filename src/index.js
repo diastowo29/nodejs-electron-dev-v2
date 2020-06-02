@@ -148,6 +148,7 @@ app.on('ready', () => {
 
         console.log("Block: " + blockIndexes[i] + " Data: " + bufferOriginal.toString('utf8'));
 
+        let { beras } = store.get('windowBounds');
         if (blockIndexes[i] == 1) {
           if (bufferOriginal.toString('utf8').includes("admn")) {
             console.log('this is admin')
@@ -167,7 +168,6 @@ app.on('ready', () => {
             if (berasRemain > 50) {
               mainWindow.webContents.send('alert', 'beras-alert');
             } else {
-              let { beras } = store.get('windowBounds');
               mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
               var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
               var jatahSubs = parseInt(beras);
