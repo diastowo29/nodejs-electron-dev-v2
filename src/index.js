@@ -33,6 +33,7 @@ echo.on('alert', (level, tick) => {
     const endTick = tick;
     const diff = (endTick >> 0) - (startTick >> 0); // Unsigned 32 bit arithmetic
     console.log(diff / 2 / MICROSECDONDS_PER_CM);
+    berasRemain = diff / 2 / MICROSECDONDS_PER_CM
   }
 });
 
@@ -82,10 +83,6 @@ app.on('ready', () => {
     height: 600,
     webPreferences: {nodeIntegration: true}
   });
-
-  let { beras } = store.get('windowBounds');
-  console.log(beras)
-
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   // mainWindow.webContents.openDevTools();
   
@@ -170,6 +167,7 @@ app.on('ready', () => {
             if (berasRemain > 50) {
               mainWindow.webContents.send('alert', 'beras-alert');
             } else {
+              let { beras } = store.get('windowBounds');
               mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
               var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
               var jatahSubs = parseInt(beras);
