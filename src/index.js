@@ -177,8 +177,13 @@ app.on('ready', () => {
               if (intKuota > jatahSubs) {
                 console.log('cukup')
                 var newKuota = intKuota - jatahSubs;
-                mfrc522.writeDataToBlock(4, newData)
                 var buf = Buffer.from(newKuota.toString(), 'utf8');
+                var newData = [];
+
+                for (var i=0; i<buf.length; i++) {
+                  newData.push(buf[i])
+                }
+                mfrc522.writeDataToBlock(4, newData)
                 
                 console.log("STEPPER ROTATING");
                 pinEnable.writeSync(0)
@@ -193,11 +198,6 @@ app.on('ready', () => {
               } else {
                 mainWindow.webContents.send('alert', 'alert');
                 console.log('kurang')
-              }
-              var newData = [];
-
-              for (var i=0; i<buf.length; i++) {
-                newData.push(buf[i])
               }
             }
           }
