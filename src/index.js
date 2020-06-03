@@ -179,6 +179,7 @@ app.on('ready', () => {
               mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
               wait(1000);
               mainWindow.webContents.send('general-info', '');
+              isTambahKartu = false;
             }
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
