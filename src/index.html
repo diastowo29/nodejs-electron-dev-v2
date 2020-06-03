@@ -8,12 +8,29 @@
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/jquery-3.5.1.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<style type="text/css">
+		.large-text {
+			font-size: xx-large;
+		}
+		.bold-text {
+			font-weight: 500;
+		}
+
+		.subsidi {
+			margin-top: 20px;
+		}
+
+		.btn {
+			/*max-width: 100%;*/
+			font-size: small;
+		}
+	</style>
   </head>
  <body style="background-image: url('garuda.png');">
   	<div class="container">
   		<div class="col-md-12">
   			<h1 id="hello" class="bold-text large-text">Bank Beras!</h1>
-  			<p class="large-text">Silahkan tempelkan Kartu anda.</p>
+  			<p class="large-text" id="general-info">Silahkan tempelkan Kartu anda.</p>
   		</div>
   		<div id="userdiv" class="col-md-12">
     		<p id="userKuota" class="bold-text large-text">Sisa kuota beras anda: 0 Kg</p>
@@ -171,6 +188,11 @@
 		newKuota++;
 		$('#newKuota').text(newKuota);
 	}
+
+
+	ipcRenderer.on('general-info', function (event,store) {
+	    $('#general-info').text(store);
+	});
 
 
 	ipcRenderer.on('store-data', function (event,store) {

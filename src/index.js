@@ -162,10 +162,6 @@ app.on('ready', () => {
             isAdmin = true
             mainWindow.webContents.send('role-data', "admin");
             mainWindow.webContents.send('admin-data', beras);
-          } else if (bufferOriginal.toString('utf8').includes("user")){
-            console.log('this is not admin')
-            mainWindow.webContents.send('role-data', "user");
-            isAdmin = false
           } else {
             if (isTambahKartu) {
               var tambahKartuBuf = Buffer.from('user', 'utf8');
@@ -175,8 +171,20 @@ app.on('ready', () => {
                 newKartuData.push(tambahKartuBuf[i])
               }
               mfrc522.writeDataToBlock(1, newKartuData)
+
+              tambahKartuBuf = Buffer.from('0', 'utf8');
+              newKartuData = [];
+
+              for (var i=0; i<tambahKartuBuf.length; i++) {
+                newKartuData.push(tambahKartuBuf[i])
+              }
+              mfrc522.writeDataToBlock(4, newKartuData)
+
               isTambahKartu = false;
             }
+            console.log('this is not admin')
+            mainWindow.webContents.send('role-data', "user");
+            isAdmin = false
           }
         }
 
@@ -191,6 +199,9 @@ app.on('ready', () => {
                 newTambahKuotaData.push(tambahKuotaBuf[i])
               }
               mfrc522.writeDataToBlock(4, newTambahKuotaData);
+              mainWindow.webContents.send('general-info', 'Penambahan kuota berhasil!');
+              wait(1000)
+              mainWindow.webContents.send('general-info', '');
             } else {
               if (berasRemain > 50) {
                 mainWindow.webContents.send('alert', 'beras-alert');
@@ -202,7 +213,7 @@ app.on('ready', () => {
                   var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
                   var jatahSubs = parseInt(beras);
 
-                  if (intKuota > jatahSubs) {
+                  if (intKuota >= jatahSubs) {
                     console.log('cukup')
                     var newKuota = intKuota - jatahSubs;
                     mainWindow.webContents.send('store-data', newKuota);
@@ -260,8 +271,9 @@ ipcMain.on('kuota', function(event, data) {
   console.log(beras)
 });
 
-ipcMain.on('new-kuota', function(event, data) {
-  newTambahKuota = data
+ipcMain.on('tambah-kuota', function(event, data) {
+  newTambahKuota = data;
+  isTambahKuota = true;
 });
 
 ipcMain.on('tambah-kartu', function(event, data) {
