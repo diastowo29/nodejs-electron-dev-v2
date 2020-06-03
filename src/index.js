@@ -183,7 +183,7 @@ app.on('ready', () => {
         }
 
 
-        if (blockIndexes[i] == 4) {
+        // if (blockIndexes[i] == 4) {
           if (!isAdmin) {
             if (isTambahKuota) {
               console.log('isTambahKuota block 4')
@@ -254,7 +254,7 @@ app.on('ready', () => {
               }
             }
           }
-        }
+        // }
       }
 
       //# Stop
