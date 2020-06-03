@@ -166,7 +166,9 @@ app.on('ready', () => {
             mainWindow.webContents.send('role-data', "admin");
             mainWindow.webContents.send('admin-data', beras);
           } else {
+            isAdmin = false
             if (isTambahKartu) {
+              console.log('penambahaan kartu block 1');
               var tambahKartuBuf = Buffer.from('user', 'utf8');
               var newKartuData = [];
 
@@ -177,7 +179,6 @@ app.on('ready', () => {
             }
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
-            isAdmin = false
           }
         }
 
@@ -185,6 +186,7 @@ app.on('ready', () => {
         if (blockIndexes[i] == 4) {
           if (!isAdmin) {
             if (isTambahKuota) {
+              console.log('isTambahKuota block 4')
               var tambahKuotaBuf = Buffer.from(newTambahKuota, 'utf8');
               var newTambahKuotaData = [];
 
@@ -197,7 +199,7 @@ app.on('ready', () => {
               mainWindow.webContents.send('general-info', '');
               isTambahKuota = false;
             } else if (isTambahKartu) {
-              console.log('penambahan kartu')
+              console.log('isTambahKartu block 4')
 
               var resetKuotaBuf = Buffer.from('0', 'utf8');
               var newKuotaData = [];
@@ -213,6 +215,7 @@ app.on('ready', () => {
 
               isTambahKartu = false;
             } else {
+              console.log('else block 4')
               if (berasRemain > 50) {
                 mainWindow.webContents.send('alert', 'beras-alert');
               } else {
@@ -252,7 +255,6 @@ app.on('ready', () => {
             }
           }
         }
-
       }
 
       //# Stop
