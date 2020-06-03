@@ -48,15 +48,16 @@
     "electron-rebuild": "^1.11.0",
     "electron-squirrel-startup": "^1.0.0",
     "mfrc522-rpi": "^2.1.2",
-    "onoff": "^6.0.0"
+    "onoff": "^6.0.0",
+    "pigpio": "^3.2.3"
   },
   "devDependencies": {
+    "electron":"^9.0.2",
     "@electron-forge/cli": "6.0.0-beta.51",
     "@electron-forge/maker-deb": "6.0.0-beta.51",
     "@electron-forge/maker-rpm": "6.0.0-beta.51",
     "@electron-forge/maker-squirrel": "6.0.0-beta.51",
     "@electron-forge/maker-zip": "6.0.0-beta.51",
-    "electron": "^9.0.0",
     "electron-builder": "^22.7.0"
   }
 }
