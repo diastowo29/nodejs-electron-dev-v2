@@ -176,6 +176,9 @@ app.on('ready', () => {
                 newKartuData.push(tambahKartuBuf[i])
               }
               mfrc522.writeDataToBlock(1, newKartuData)
+              mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
+              wait(1000);
+              mainWindow.webContents.send('general-info', '');
             }
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
@@ -183,7 +186,7 @@ app.on('ready', () => {
         }
 
 
-        // if (blockIndexes[i] == 4) {
+        if (blockIndexes[i] == 4) {
           if (!isAdmin) {
             if (isTambahKuota) {
               console.log('isTambahKuota block 4')
@@ -201,17 +204,14 @@ app.on('ready', () => {
             } else if (isTambahKartu) {
               console.log('isTambahKartu block 4')
 
-              var resetKuotaBuf = Buffer.from('0', 'utf8');
-              var newKuotaData = [];
+              // var resetKuotaBuf = Buffer.from('0', 'utf8');
+              // var newKuotaData = [];
 
-              for (var i=0; i<resetKuotaBuf.length; i++) {
-                newKuotaData.push(resetKuotaBuf[i])
-              }
-              mfrc522.writeDataToBlock(4, newKuotaData)
+              // for (var i=0; i<resetKuotaBuf.length; i++) {
+              //   newKuotaData.push(resetKuotaBuf[i])
+              // }
+              // mfrc522.writeDataToBlock(4, newKuotaData)
 
-              mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
-              wait(1000);
-              mainWindow.webContents.send('general-info', '');
 
               isTambahKartu = false;
             } else {
@@ -254,7 +254,7 @@ app.on('ready', () => {
               }
             }
           }
-        // }
+        }
       }
 
       //# Stop
