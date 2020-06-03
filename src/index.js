@@ -88,9 +88,12 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    webPreferences: {nodeIntegration: true}
+    webPreferences: {nodeIntegration: true},
+    // frame: false
   });
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  mainWindow.setMenuBarVisibility(false);
+  mainWindow.setFullScreen(true)
   // mainWindow.webContents.openDevTools();
   
   app.on('activate', function () {
@@ -171,20 +174,6 @@ app.on('ready', () => {
                 newKartuData.push(tambahKartuBuf[i])
               }
               mfrc522.writeDataToBlock(1, newKartuData)
-
-              tambahKartuBuf = Buffer.from('0', 'utf8');
-              newKartuData = [];
-
-              for (var i=0; i<tambahKartuBuf.length; i++) {
-                newKartuData.push(tambahKartuBuf[i])
-              }
-              mfrc522.writeDataToBlock(4, newKartuData)
-
-              mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
-              wait(1000);
-              mainWindow.webContents.send('general-info', '');
-
-              isTambahKartu = false;
             }
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
@@ -209,6 +198,20 @@ app.on('ready', () => {
               isTambahKuota = false;
             } else if (isTambahKartu) {
               console.log('penambahan kartu')
+
+              var resetKuotaBuf = Buffer.from('0', 'utf8');
+              var newKuotaData = [];
+
+              for (var i=0; i<resetKuotaBuf.length; i++) {
+                newKuotaData.push(resetKuotaBuf[i])
+              }
+              mfrc522.writeDataToBlock(4, newKuotaData)
+
+              mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
+              wait(1000);
+              mainWindow.webContents.send('general-info', '');
+
+              isTambahKartu = false;
             } else {
               if (berasRemain > 50) {
                 mainWindow.webContents.send('alert', 'beras-alert');
