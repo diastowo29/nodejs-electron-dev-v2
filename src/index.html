@@ -9,43 +9,169 @@
 	<script src="js/jquery-3.5.1.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
-  <body style="background-image: url('garuda.png');">
-  	<div>
-	    <h1 id="hello">Bank Beras!</h1>
-	    <p>Silahkan tempelkan Kartu anda.</p>
+ <body style="background-image: url('garuda.png');">
+  	<div class="container">
+  		<div class="col-md-12">
+  			<h1 id="hello" class="bold-text large-text">Bank Beras!</h1>
+  			<p class="large-text">Silahkan tempelkan Kartu anda.</p>
+  		</div>
+  		<div id="userdiv" class="col-md-12">
+    		<p id="userKuota" class="bold-text large-text">Sisa kuota beras anda: 0 Kg</p>
+  		</div>
+  		<div id="admindiv">
+  			<div id="mainmenu" class="row col-md-12">
+  				<div class="col-md-3">
+			    	<button class="btn btn-success btn-xs" onclick="gotoSubsidi()">Pengaturan<br>Subsidi</button>
+  				</div>
+  				<div class="col-md-3">
+			    	<button class="btn btn-info btn-xs" onclick="gotoTambahKartu()">Penambahan<br>Kartu</button>
+  				</div>
+  				<div class="col-md-3">
+			    	<button class="btn btn-primary btn-xs" onclick="gotoKosongTangki()">Pengosongan<br>Tangki</button>
+  				</div>
+  				<div class="col-md-3">
+			    	<button class="btn btn-success btn-xs" onclick="gotoTambahKuota()">Penambahan<br>Kuota</button>
+  				</div>
+  			</div>
+
+  			<div class="row col-md-12 subsidi" id="subsidi">
+			    <div class="col-md-3">
+			      <h3>Subsidi</h3>
+			    </div>
+			    <div class="col-md-2">
+			    	<input type="image" id="image-minus" alt="plus" onclick="minusClick()" src="styles/minus48.png">
+			    </div>
+			    <div class="col-md-1">
+			      <h3 id="berasKuota" style="margin-top: 6px;">0</h3>
+			    </div>
+			    <div class="col-md-2">
+			    	<input type="image" id="image-plus" alt="plus" onclick="plusClick()" src="styles/plus48.png">
+			    </div>
+			    <div class="col-md-4">
+			    	<button class="btn btn-success" onclick="saveSubsidi()">Simpan</button>
+			    </div>
+  			</div>
+  			<div class="row col-md-12 subsidi" id="tambahKartu">
+			    <div class="col-md-6">
+			    	<h3>Tambah Kartu</h3>
+			    </div>
+			    <div class="col-md-6">
+			    	<button class="btn btn-success" onclick="saveTambahKartu()">Tambah</button>
+			    </div>
+  			</div>
+  			<div class="row col-md-12 subsidi" id="kosongTangki">
+			    <div class="col-md-7">
+			    	<h3>Kosongkan Tangki</h3>
+			    </div>
+			    <div class="col-md-2">
+			    	<button class="btn btn-success" onclick="startKosongkan()">Start</button>
+			    </div>
+			    <div class="col-md-2">
+			    	<button class="btn btn-danger" onclick="stopKosongkan()">Stop</button>
+			    </div>
+  			</div>
+  			<div class="row col-md-12 subsidi" id="tambahKuota">
+			    <div class="col-md-3">
+			      <h3>Kuota</h3>
+			    </div>
+			    <div class="col-md-2">
+			    	<input type="image" id="image-minus" alt="plus" onclick="minusKuota()" src="styles/minus48.png">
+			    </div>
+			    <div class="col-md-1">
+			      <h3 id="newKuota" style="margin-top: 6px;">0</h3>
+			    </div>
+			    <div class="col-md-2">
+			    	<input type="image" id="image-plus" alt="plus" onclick="plusKuota()" src="styles/plus48.png">
+			    </div>
+			    <div class="col-md-4">
+			    	<button class="btn btn-success" onclick="saveTambahKuota()">Tambah</button>
+			    </div>
+  			</div>
+  			<div class="col-md-12 subsidi">
+  				<button class="btn btn-primary btn-xs" onclick="gotoAdminSelesai()">Selesai</button>
+  			</div>
+  		</div>
   	</div>
-    <div class="container">
-    	<div id="userdiv">
-    		<p id="userKuota">Sisa kuota beras anda: 0 Kg</p>
-    	</div>
-    	<div id="admindiv">
-		  <div class="row">
-		    <div class="col-md-12">
-		      <h3>Subsidi Beras</h3>
-		    </div>
-		    <div class="col-md-2">
-		    	<input style="width: 100%;" type="image" id="image-minus" alt="plus" onclick="minusClick()" src="styles/minus48.png">
-		    </div>
-		    <div class="col-md-1">
-		      <h3 id="berasKuota" style="margin-top: 12px;">0</h3>
-		    </div>
-		    <div class="col-md-2">
-		    	<input style="width: 100%;" type="image" id="image-plus" alt="plus" onclick="plusClick()" src="styles/plus48.png">
-		    </div>
-
-		    <div class="col-md-12"></div>
-
-		    <div class="col-md-5">
-		    	<button style="width: 100%;" class="btn btn-success" onclick="saveSubsidi()">Simpan</button>
-		    </div>
-		  </div>
-    	</div>
-	</div>
   </body>
   <script type="text/javascript">
 	var ipcRenderer = require('electron').ipcRenderer;
+  	var newKuota = 0;
   	var berasCount = 0;
+
   	$('#admindiv').hide()
+
+  	$('#subsidi').hide()
+  	$('#tambahKartu').hide()
+  	$('#kosongTangki').hide()
+  	$('#tambahKuota').hide()
+  	// $('#berasKuota').text(berasCount);
+  	console.log(berasCount)
+
+  	function gotoSubsidi () {
+  		$('#tambahKartu').hide();
+  		$('#tambahKuota').hide()
+  		$('#kosongTangki').hide();
+  		$('#subsidi').show();
+  	}
+
+  	function gotoTambahKartu () {
+  		$('#kosongTangki').hide();
+  		$('#tambahKuota').hide()
+  		$('#subsidi').hide();
+  		$('#tambahKartu').show();
+  	}
+
+  	function gotoKosongTangki () {
+  		$('#kosongTangki').show();
+  		$('#subsidi').hide();
+  		$('#tambahKartu').hide();
+  		$('#tambahKuota').hide()
+  	}
+
+  	function gotoTambahKuota () {
+  		$('#kosongTangki').hide();
+  		$('#subsidi').hide();
+  		$('#tambahKartu').hide();
+  		$('#tambahKuota').show()
+  	}
+
+  	function saveTambahKartu () {
+  		console.log('saveTambahKartu')
+		ipcRenderer.send('tambah-kartu', true);
+  	}
+
+  	function startKosongkan () {
+  		console.log('startKosongkan')
+		ipcRenderer.send('kosongkan-tangki', true);
+  	}
+
+  	function stopKosongkan () {
+  		console.log('stopKosongkan')
+		ipcRenderer.send('kosongkan-tangki', false);
+  	}
+
+  	function saveTambahKuota () {
+  		console.log('saveTambahKuota')
+		ipcRenderer.send('tambah-kuota', newKuota.toString());
+
+  	}
+
+  	function gotoAdminSelesai () {
+  		$('#admindiv').hide()
+  	}
+
+	function minusKuota () {
+		if (newKuota > 0) {
+			newKuota--;
+		}
+		$('#newKuota').text(newKuota);
+	}
+
+	function plusKuota () {
+		newKuota++;
+		$('#newKuota').text(newKuota);
+	}
+
 
 	ipcRenderer.on('store-data', function (event,store) {
 	    $('#userKuota').text('Sisa kuota beras anda: ' + parseInt(store) + ' Kg')

@@ -13,6 +13,11 @@ var pinPulse = new Gpio(21, 'out');
 const piGpio = require('pigpio').Gpio;
 var berasRemain = 0;
 
+var isTambahKartu = false;
+var startKosongkanTangki = false
+var isTambahKuota = false;
+var newTambahKuota = '';
+
 pinEnable.writeSync(1);
 
 // The number of microseconds it takes sound to travel 1cm at 20 degrees celcius
@@ -157,49 +162,75 @@ app.on('ready', () => {
             isAdmin = true
             mainWindow.webContents.send('role-data', "admin");
             mainWindow.webContents.send('admin-data', beras);
-          } else {
+          } else if (bufferOriginal.toString('utf8').includes("user")){
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
             isAdmin = false
+          } else {
+            if (isTambahKartu) {
+              var tambahKartuBuf = Buffer.from('user', 'utf8');
+              var newKartuData = [];
+
+              for (var i=0; i<tambahKartuBuf.length; i++) {
+                newKartuData.push(tambahKartuBuf[i])
+              }
+              mfrc522.writeDataToBlock(1, newKartuData)
+              isTambahKartu = false;
+            }
           }
         }
 
 
         if (blockIndexes[i] == 4) {
           if (!isAdmin) {
-            if (berasRemain > 50) {
-              mainWindow.webContents.send('alert', 'beras-alert');
+            if (isTambahKuota) {
+              var tambahKuotaBuf = Buffer.from(newTambahKuota, 'utf8');
+              var newTambahKuotaData = [];
+
+              for (var i=0; i<tambahKuotaBuf.length; i++) {
+                newTambahKuotaData.push(tambahKuotaBuf[i])
+              }
+              mfrc522.writeDataToBlock(4, newTambahKuotaData);
             } else {
-              mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
-              var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
-              var jatahSubs = parseInt(beras);
-
-              if (intKuota > jatahSubs) {
-                console.log('cukup')
-                var newKuota = intKuota - jatahSubs;
-                mainWindow.webContents.send('store-data', newKuota);
-                var buf = Buffer.from(newKuota.toString(), 'utf8');
-                var newData = [];
-
-                for (var i=0; i<buf.length; i++) {
-                  newData.push(buf[i])
-                }
-                mfrc522.writeDataToBlock(4, newData)
-                
-                console.log("STEPPER ROTATING");
-                pinEnable.writeSync(0)
-                pinDir.writeSync(1)
-                for (var i=0; i<(jatahSubs*200); i++) {
-                  pinPulse.writeSync(1);
-                  wait(10)
-                  pinPulse.writeSync(0)
-                  wait(10)
-                }
-                pinEnable.writeSync(1)
-                mainWindow.webContents.send('clear', 'alert');
+              if (berasRemain > 50) {
+                mainWindow.webContents.send('alert', 'beras-alert');
               } else {
-                mainWindow.webContents.send('alert', 'alert');
-                console.log('kurang')
+                if (isTambahKartu) {
+                  console.log('isTambahKartu: ' + isTambahKartu);
+                } else {
+                  mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
+                  var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
+                  var jatahSubs = parseInt(beras);
+
+                  if (intKuota > jatahSubs) {
+                    console.log('cukup')
+                    var newKuota = intKuota - jatahSubs;
+                    mainWindow.webContents.send('store-data', newKuota);
+                    var buf = Buffer.from(newKuota.toString(), 'utf8');
+                    var newData = [];
+
+                    for (var i=0; i<buf.length; i++) {
+                      newData.push(buf[i])
+                    }
+                    mfrc522.writeDataToBlock(4, newData)
+                    
+                    console.log("STEPPER ROTATING");
+                    pinEnable.writeSync(0)
+                    pinDir.writeSync(1)
+                    for (var i=0; i<(jatahSubs*200); i++) {
+                      pinPulse.writeSync(1);
+                      wait(10)
+                      pinPulse.writeSync(0)
+                      wait(10)
+                    }
+                    wait(1000);
+                    pinEnable.writeSync(1)
+                    mainWindow.webContents.send('clear', 'alert');
+                  } else {
+                    mainWindow.webContents.send('alert', 'alert');
+                    console.log('kurang')
+                  }
+                }
               }
             }
           }
@@ -228,6 +259,50 @@ ipcMain.on('kuota', function(event, data) {
   beras = data
   console.log(beras)
 });
+
+ipcMain.on('new-kuota', function(event, data) {
+  newTambahKuota = data
+});
+
+ipcMain.on('tambah-kartu', function(event, data) {
+  isTambahKartu = true;
+});
+
+ipcMain.on('kosongkan-tangki', function(event, data) {
+  startKosongkanTangki = data
+  var rotateInterval;
+  if (startKosongkanTangki) {
+
+    // pinDir.writeSync(1)
+    // pinPulse.writeSync(1);
+    //   wait(10)
+    //   pinPulse.writeSync(0)
+    //   wait(10)
+
+    console.log("STEPPER ROTATING");
+    pinEnable.writeSync(0)
+    pinDir.writeSync(1)
+    rotateInterval = setInterval(rotateStepper, 10);
+  } else {
+    wait(1000);
+    pinEnable.writeSync(1)
+    clearInterval(rotateInterval);
+  }
+
+});
+  function rotateStepper() {
+    if (pinPulse.readSync() === 0) {
+      pinPulse.writeSync(1);
+      ledPin.writeSync(1);
+    } else {
+      pinPulse.writeSync(0);
+      ledPin.writeSync(0);
+    }
+    if (!startKosongkanTangki) {
+      clearInterval()
+    }
+  }
+
 
 function wait(ms){
    var start = new Date().getTime();
