@@ -180,6 +180,10 @@ app.on('ready', () => {
               }
               mfrc522.writeDataToBlock(4, newKartuData)
 
+              mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
+              wait(1000);
+              mainWindow.webContents.send('general-info', '');
+
               isTambahKartu = false;
             }
             console.log('this is not admin')
@@ -200,48 +204,47 @@ app.on('ready', () => {
               }
               mfrc522.writeDataToBlock(4, newTambahKuotaData);
               mainWindow.webContents.send('general-info', 'Penambahan kuota berhasil!');
-              wait(1000)
+              wait(1000);
               mainWindow.webContents.send('general-info', '');
+              isTambahKuota = false;
+            } else if (isTambahKartu) {
+              console.log('penambahan kartu')
             } else {
               if (berasRemain > 50) {
                 mainWindow.webContents.send('alert', 'beras-alert');
               } else {
-                if (isTambahKartu) {
-                  console.log('isTambahKartu: ' + isTambahKartu);
-                } else {
-                  mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
-                  var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
-                  var jatahSubs = parseInt(beras);
+                mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
+                var intKuota = parseInt(bufferOriginal.toString('utf8'), 10);
+                var jatahSubs = parseInt(beras);
 
-                  if (intKuota >= jatahSubs) {
-                    console.log('cukup')
-                    var newKuota = intKuota - jatahSubs;
-                    mainWindow.webContents.send('store-data', newKuota);
-                    var buf = Buffer.from(newKuota.toString(), 'utf8');
-                    var newData = [];
+                if (intKuota >= jatahSubs) {
+                  console.log('cukup')
+                  var newKuota = intKuota - jatahSubs;
+                  mainWindow.webContents.send('store-data', newKuota);
+                  var buf = Buffer.from(newKuota.toString(), 'utf8');
+                  var newData = [];
 
-                    for (var i=0; i<buf.length; i++) {
-                      newData.push(buf[i])
-                    }
-                    mfrc522.writeDataToBlock(4, newData)
-                    
-                    console.log("STEPPER ROTATING");
-                    pinEnable.writeSync(0)
-                    pinDir.writeSync(1)
-                    for (var i=0; i<(jatahSubs*200); i++) {
-                      pinPulse.writeSync(1);
-                      wait(10)
-                      pinPulse.writeSync(0)
-                      wait(10)
-                    }
-                    wait(1000);
-                    pinEnable.writeSync(1)
-                    mainWindow.webContents.send('clear', 'alert');
-                  } else {
-                    mainWindow.webContents.send('alert', 'alert');
-                    console.log('kurang')
+                  for (var i=0; i<buf.length; i++) {
+                    newData.push(buf[i])
                   }
-                }
+                  mfrc522.writeDataToBlock(4, newData)
+                  
+                  console.log("STEPPER ROTATING");
+                  pinEnable.writeSync(0)
+                  pinDir.writeSync(1)
+                  for (var i=0; i<(jatahSubs*200); i++) {
+                    pinPulse.writeSync(1);
+                    wait(10)
+                    pinPulse.writeSync(0)
+                    wait(10)
+                  }
+                  wait(1000);
+                  pinEnable.writeSync(1)
+                  mainWindow.webContents.send('clear', 'alert');
+                } else {
+                  mainWindow.webContents.send('alert', 'alert');
+                  console.log('kurang')
+                } 
               }
             }
           }
@@ -305,10 +308,8 @@ ipcMain.on('kosongkan-tangki', function(event, data) {
   function rotateStepper() {
     if (pinPulse.readSync() === 0) {
       pinPulse.writeSync(1);
-      ledPin.writeSync(1);
     } else {
       pinPulse.writeSync(0);
-      ledPin.writeSync(0);
     }
     if (!startKosongkanTangki) {
       clearInterval()
