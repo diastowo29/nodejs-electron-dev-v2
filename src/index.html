@@ -28,9 +28,16 @@
   </head>
  <body style="background-image: url('garuda.png');">
   	<div class="container">
-  		<div class="col-md-12">
-  			<h1 id="hello" class="bold-text large-text">Bank Beras</h1>
-  			<p class="large-text" id="general-info">Silahkan tempelkan Kartu anda.</p>
+  		<div class="row">
+	  		<div class="col-md-10">
+	  			<h1 id="hello" class="bold-text large-text">Bank Beras!</h1>
+	  		</div>
+	  		<div class="col-md-2">
+	  			<input style="float: right; max-width: 70%;" type="image" id="image-plus" alt="plus" onclick="closeWindow()" src="poweroff.png">
+	  		</div>
+	  		<div class="col-md-12">
+	  			<p class="large-text">Silahkan tempelkan Kartu anda.</p>
+	  		</div>
   		</div>
   		<div id="userdiv" class="col-md-12">
     		<p id="userKuota" class="bold-text large-text">Sisa kuota beras anda: 0 Kg</p>
@@ -123,6 +130,11 @@
   	$('#tambahKuota').hide()
   	// $('#berasKuota').text(berasCount);
   	console.log(berasCount)
+  	
+  	function closeWindow() {
+  		console.log('closing')
+  		remote.getCurrentWindow().close()
+  	}
 
   	function gotoSubsidi () {
   		$('#tambahKartu').hide();
