@@ -295,9 +295,9 @@ function wait(ms){
 /* NANO TIMER */
 var NanoTimer = require('nanotimer');
 
+var timer = new NanoTimer();
 
 function main() {
-  var timer = new NanoTimer();
 
   pinEnable.writeSync(0)
   pinDir.writeSync(1)
@@ -318,6 +318,7 @@ function stepperGo () {
 }
 
 function stepperOff () {
+  timer.clearInterval();
   console.log('end process')
   pinPulse.writeSync(0);
   pinDir.writeSync(0);
