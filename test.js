@@ -307,12 +307,14 @@ function main() {
 }
 
 function stepperGo () {
-  console.log('pinPulse: %s', pinPulse.readSync())
   if (pinPulse.readSync() === 0) {
     pinPulse.writeSync(1);
+    console.log('1')
   } else {
     pinPulse.writeSync(0);
+    console.log('0')
   }
+  // console.log('pinPulse: %s', pinPulse.readSync())
 }
 
 function stepperOff () {
