@@ -344,7 +344,7 @@ function stepperOff () {
 function newMain() {
   pinEnable.writeSync(0)
   pinDir.writeSync(1)
-  for (var i=0; i<1000; i++) {
+  for (var i=0; i<16000; i++) {
     pinPulse.writeSync(1);
     waitUs(500)
     pinPulse.writeSync(0);

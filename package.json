@@ -45,6 +45,7 @@
     }
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "electron-rebuild": "^1.11.0",
     "electron-squirrel-startup": "^1.0.0",
     "mfrc522-rpi": "^2.1.2",
