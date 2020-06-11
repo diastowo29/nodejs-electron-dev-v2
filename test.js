@@ -304,6 +304,9 @@ function main() {
 
   timer.setInterval(stepperGo, '', '5u');
   timer.setTimeout(stepperOff, [timer], '20s');
+  pinPulse.unexport();
+  pinDir.unexport();
+  pinEnable.unexport();
 }
 
 function stepperGo () {
@@ -322,9 +325,6 @@ function stepperOff () {
   pinPulse.writeSync(0);
   pinDir.writeSync(0);
   pinEnable.writeSync(1);
-  pinPulse.unexport();
-  pinDir.unexport();
-  pinEnable.unexport();
 }
 
 main();
