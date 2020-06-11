@@ -307,6 +307,9 @@ function main() {
 }
 
 function stepperGo () {
+  pinEnable.writeSync(0)
+  pinDir.writeSync(1)
+
   if (pinPulse.readSync() === 0) {
     pinPulse.writeSync(1);
     console.log('1')
@@ -323,6 +326,11 @@ function stepperOff () {
   pinPulse.writeSync(0);
   pinDir.writeSync(0);
   pinEnable.writeSync(1);
+
+  console.log('pinPulse: %s', pinPulse.readSync())
+  console.log('pinDir: %s', pinDir.readSync())
+  console.log('pinEnable: %s', pinEnable.readSync())
+  
   pinPulse.unexport();
   pinDir.unexport();
   pinEnable.unexport();
