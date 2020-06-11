@@ -303,13 +303,11 @@ function main() {
   pinEnable.writeSync(0)
   pinDir.writeSync(1)
 
-  timer.setInterval(stepperGo, '', '1u');
+  timer.setInterval(stepperGo, '', '5u');
   timer.setTimeout(stepperOff, [timer], '20s');
 }
 
 function stepperGo () {
-  pinEnable.writeSync(0)
-  pinDir.writeSync(1)
 
   if (pinPulse.readSync() === 0) {
     pinPulse.writeSync(1);
