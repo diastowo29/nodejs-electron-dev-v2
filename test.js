@@ -1,7 +1,7 @@
 var Gpio = require('onoff').Gpio;
-// var pinEnable = new Gpio(13, 'out');
-// var pinDir = new Gpio(19, 'out');
-// var pinPulse = new Gpio(21, 'out');
+var pinEnable = new Gpio(13, 'out');
+var pinDir = new Gpio(19, 'out');
+var pinPulse = new Gpio(21, 'out');
 const μs = require('microseconds')
 
 // var ledPin = new Gpio(3, 'out');
