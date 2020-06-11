@@ -302,7 +302,7 @@ function main() {
   pinEnable.writeSync(0)
   pinDir.writeSync(1)
 
-  timer.setInterval(stepperGo, '', '5u');
+  timer.setInterval(stepperGo, '', '10u');
   timer.setTimeout(stepperOff, [timer], '20s');
 }
 
