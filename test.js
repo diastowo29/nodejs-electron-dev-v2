@@ -1,7 +1,8 @@
 var Gpio = require('onoff').Gpio;
 var pinEnable = new Gpio(13, 'out');
 var pinDir = new Gpio(19, 'out');
-var pinPulse = new Gpio(12, 'out');
+var pinPulse = new Gpio(21, 'out');
+
 // var ledPin = new Gpio(3, 'out');
 
 // var trigger = new Gpio(23, 'out');
@@ -330,7 +331,7 @@ function stepperOff () {
   console.log('pinPulse: %s', pinPulse.readSync())
   console.log('pinDir: %s', pinDir.readSync())
   console.log('pinEnable: %s', pinEnable.readSync())
-  
+
   pinPulse.unexport();
   pinDir.unexport();
   pinEnable.unexport();
