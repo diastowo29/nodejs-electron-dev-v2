@@ -177,12 +177,12 @@ app.on('ready', () => {
               }
               mfrc522.writeDataToBlock(1, newKartuData)
               mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
-              wait(5000);
-              mainWindow.webContents.send('general-info', '');
-              isTambahKartu = false;
             }
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
+            wait(5000);
+            mainWindow.webContents.send('general-info', '');
+            isTambahKartu = false;
           }
         }
 
