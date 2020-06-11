@@ -33,7 +33,7 @@ var pinPulse = new Gpio(12, 'out');
 //   }
 // });
 
-pinEnable.writeSync(1)
+pinEnable.writeSync(0)
 pinDir.writeSync(1)
 
 stepCounter = 0;
