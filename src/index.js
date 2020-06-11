@@ -180,7 +180,7 @@ app.on('ready', () => {
             }
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
-            wait(5000);
+            wait(3000);
             mainWindow.webContents.send('general-info', '');
             isTambahKartu = false;
           }
