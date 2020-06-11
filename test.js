@@ -36,48 +36,54 @@ var pinPulse = new Gpio(12, 'out');
 pinEnable.writeSync(0)
 pinDir.writeSync(1)
 
-stepCounter = 0;
-
-var blinkInterval = setInterval(blinkLED, 1);
+// var blinkInterval = setInterval(blinkLED, 1);
 
 // var subsidi = 3;
 
-// for (var i=0; i<200; i++) {
-//   console.log('pinPulse: %s', pinPulse.readSync());
-//   pinPulse.writeSync(1);
-//   wait(10)
-//   console.log('pinPulse: %s', pinPulse.readSync());
-//   pinPulse.writeSync(0)
-//   wait(10)
+for (var i=0; i<1000; i++) {
+  console.log('pinPulse: %s', pinPulse.readSync());
+  pinPulse.writeSync(1);
+  wait(5)
+  console.log('pinPulse: %s', pinPulse.readSync());
+  pinPulse.writeSync(0)
+  wait(5)
+}
+pinPulse.writeSync(0);
+pinDir.writeSync(0);
+pinEnable.writeSync(1);
+// ledPin.writeSync(0);
+pinPulse.unexport();
+pinDir.unexport();
+pinEnable.unexport();
+// ledPin.unexport();
+
+// function blinkLED() {
+//   console.log('pinPulse: %s', pinPulse.readSync())
+//   if (pinPulse.readSync() === 0) {
+//     pinPulse.writeSync(1);
+//   } else {
+//     pinPulse.writeSync(0);
+//   }
 // }
 
-function blinkLED() {
-  stepCounter++;
-  // console.log(stepCounter)
-  console.log('pinPulse: %s', pinPulse.readSync())
-  if (pinPulse.readSync() === 0) {
-    pinPulse.writeSync(1);
-  } else {
-    pinPulse.writeSync(0);
-  }
-}
 
-function endBlink() {
-  console.log('end process')
-  clearInterval(blinkInterval);
-  pinPulse.writeSync(0);
-  pinDir.writeSync(0);
-  pinEnable.writeSync(0);
-  // ledPin.writeSync(0);
-  pinPulse.unexport();
-  pinDir.unexport();
-  pinEnable.unexport();
-  // ledPin.unexport();
-}
 
-setTimeout(endBlink, 50000);
+// function endBlink() {
+//   console.log('end process')
+//   clearInterval(blinkInterval);
+//   pinPulse.writeSync(0);
+//   pinDir.writeSync(0);
+//   pinEnable.writeSync(1);
+//   // ledPin.writeSync(0);
+//   pinPulse.unexport();
+//   pinDir.unexport();
+//   pinEnable.unexport();
+//   // ledPin.unexport();
+// }
 
-process.on('SIGINT', endBlink);
+// setTimeout(endBlink, 50000);
+
+// process.on('SIGINT', endBlink);
 
 
 
