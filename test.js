@@ -33,57 +33,57 @@ var pinPulse = new Gpio(12, 'out');
 //   }
 // });
 
-pinEnable.writeSync(0)
-pinDir.writeSync(1)
+// pinEnable.writeSync(0)
+// pinDir.writeSync(1)
 
-var blinkInterval = setInterval(blinkLED, 0.005);
+// var blinkInterval = setInterval(blinkLED, 0.005);
 
-// var subsidi = 3;
+// // var subsidi = 3;
 
-// for (var i=0; i<1000; i++) {
-//   console.log('pinPulse: %s', pinPulse.readSync());
-//   pinPulse.writeSync(1);
-//   wait(5)
-//   console.log('pinPulse: %s', pinPulse.readSync());
-//   pinPulse.writeSync(0)
-//   wait(5)
+// // for (var i=0; i<1000; i++) {
+// //   console.log('pinPulse: %s', pinPulse.readSync());
+// //   pinPulse.writeSync(1);
+// //   wait(5)
+// //   console.log('pinPulse: %s', pinPulse.readSync());
+// //   pinPulse.writeSync(0)
+// //   wait(5)
+// // }
+// // pinPulse.writeSync(0);
+// // pinDir.writeSync(0);
+// // pinEnable.writeSync(1);
+// // // ledPin.writeSync(0);
+// // pinPulse.unexport();
+// // pinDir.unexport();
+// // pinEnable.unexport();
+// // // ledPin.unexport();
+
+// function blinkLED() {
+//   console.log('pinPulse: %s', pinPulse.readSync())
+//   if (pinPulse.readSync() === 0) {
+//     pinPulse.writeSync(1);
+//   } else {
+//     pinPulse.writeSync(0);
+//   }
 // }
-// pinPulse.writeSync(0);
-// pinDir.writeSync(0);
-// pinEnable.writeSync(1);
-// // ledPin.writeSync(0);
-// pinPulse.unexport();
-// pinDir.unexport();
-// pinEnable.unexport();
-// // ledPin.unexport();
-
-function blinkLED() {
-  console.log('pinPulse: %s', pinPulse.readSync())
-  if (pinPulse.readSync() === 0) {
-    pinPulse.writeSync(1);
-  } else {
-    pinPulse.writeSync(0);
-  }
-}
 
 
 
-function endBlink() {
-  console.log('end process')
-  clearInterval(blinkInterval);
-  pinPulse.writeSync(0);
-  pinDir.writeSync(0);
-  pinEnable.writeSync(1);
-  // ledPin.writeSync(0);
-  pinPulse.unexport();
-  pinDir.unexport();
-  pinEnable.unexport();
-  // ledPin.unexport();
-}
+// function endBlink() {
+//   console.log('end process')
+//   clearInterval(blinkInterval);
+//   pinPulse.writeSync(0);
+//   pinDir.writeSync(0);
+//   pinEnable.writeSync(1);
+//   // ledPin.writeSync(0);
+//   pinPulse.unexport();
+//   pinDir.unexport();
+//   pinEnable.unexport();
+//   // ledPin.unexport();
+// }
 
-setTimeout(endBlink, 50000);
+// setTimeout(endBlink, 50000);
 
-process.on('SIGINT', endBlink);
+// process.on('SIGINT', endBlink);
 
 
 
@@ -284,3 +284,46 @@ function wait(ms){
 //   //# Stop
 //   mfrc522.stopCrypto();
 // }, 500);
+
+
+
+
+
+
+
+
+/* NANO TIMER */
+var NanoTimer = require('nanotimer');
+
+
+function main() {
+  var timer = new NanoTimer();
+
+  pinEnable.writeSync(0)
+  pinDir.writeSync(1)
+
+  timer.setInterval(stepperGo, '', '10u');
+  timer.setTimeout(stepperOff, [timer], '10s');
+}
+
+function stepperGo () {
+  console.log('pinPulse: %s', pinPulse.readSync())
+  if (pinPulse.readSync() === 0) {
+    pinPulse.writeSync(1);
+  } else {
+    pinPulse.writeSync(0);
+  }
+}
+
+function stepperOff () {
+  console.log('end process')
+  clearInterval(blinkInterval);
+  pinPulse.writeSync(0);
+  pinDir.writeSync(0);
+  pinEnable.writeSync(1);
+  pinPulse.unexport();
+  pinDir.unexport();
+  pinEnable.unexport();
+}
+
+main();
