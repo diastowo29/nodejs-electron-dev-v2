@@ -1,7 +1,8 @@
 var Gpio = require('onoff').Gpio;
-var pinEnable = new Gpio(13, 'out');
-var pinDir = new Gpio(19, 'out');
-var pinPulse = new Gpio(21, 'out');
+// var pinEnable = new Gpio(13, 'out');
+// var pinDir = new Gpio(19, 'out');
+// var pinPulse = new Gpio(21, 'out');
+const μs = require('microseconds')
 
 // var ledPin = new Gpio(3, 'out');
 
@@ -126,7 +127,13 @@ var pinPulse = new Gpio(21, 'out');
 
 
 
-
+function waitUs (us) {
+   var start = μs.now()
+   var end = start;
+   while(end < start + us) {
+     end = μs.now()
+  }
+}
 
 
 
@@ -299,12 +306,23 @@ var NanoTimer = require('nanotimer');
 var timer = new NanoTimer();
 
 function main() {
+  // var start = new Date().getTime();
+  // const now = μs.now()
+
+  // console.log(start)
+  // console.log(now)
 
   pinEnable.writeSync(0)
   pinDir.writeSync(1)
+  for (var i=0; i<1000; i++) {
+    pinPulse.writeSync(1);
+    waitUs(500)
+    pinPulse.writeSync(0);
+    waitUs(500)
+  }
 
-  timer.setInterval(stepperGo, '', '5u');
-  timer.setTimeout(stepperOff, [timer], '20s');
+  // timer.setInterval(stepperGo, '', '5u');
+  // timer.setTimeout(stepperOff, [timer], '20s');
 }
 
 function stepperGo () {
