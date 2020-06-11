@@ -217,7 +217,7 @@ app.on('ready', () => {
               isTambahKartu = false;
             } else {
               console.log('else block 4')
-              if (berasRemain > 50) {
+              if (berasRemain > 70) {
                 mainWindow.webContents.send('alert', 'beras-alert');
               } else {
                 mainWindow.webContents.send('store-data', bufferOriginal.toString('utf8'));
