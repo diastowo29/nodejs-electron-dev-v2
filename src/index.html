@@ -33,7 +33,7 @@
 	  			<h1 id="hello" class="bold-text large-text">Bank Beras!</h1>
 	  		</div>
 	  		<div class="col-md-2">
-	  			<input style="float: right; max-width: 70%;" type="image" id="image-plus" alt="plus" onclick="closeWindow()" src="poweroff.png">
+	  			<input style="float: right; max-width: 70%;" type="image" id="image-onoff" alt="plus" onclick="closeWindow()" src="poweroff.png">
 	  		</div>
 	  		<div class="col-md-12">
 	  			<p class="large-text">Silahkan tempelkan Kartu anda.</p>
@@ -239,9 +239,11 @@
 		if (store == 'admin') {
 			$('#admindiv').show()
 			$('#userdiv').hide()
+			$('#image-onoff').show()
 		} else {
 			$('#admindiv').hide()
 			$('#userdiv').show()
+			$('#image-onoff').hide()
 		}
 	});
 
