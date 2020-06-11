@@ -237,16 +237,19 @@ app.on('ready', () => {
                   mfrc522.writeDataToBlock(4, newData)
                   
                   console.log("STEPPER ROTATING");
+                  
                   pinEnable.writeSync(0)
-                  pinDir.writeSync(1)
-                  for (var i=0; i<(jatahSubs*35); i++) {
-                    pinPulse.writeSync(1);
-                    wait(10)
-                    pinPulse.writeSync(0)
-                    wait(10)
-                  }
-                  wait(1000);
+                  wait(925*jatahSubs)
                   pinEnable.writeSync(1)
+                  // pinDir.writeSync(1)
+                  // for (var i=0; i<(jatahSubs*35); i++) {
+                  //   pinPulse.writeSync(1);
+                  //   wait(10)
+                  //   pinPulse.writeSync(0)
+                  //   wait(10)
+                  // }
+                  // wait(1000);
+                  // pinEnable.writeSync(1)
                   mainWindow.webContents.send('clear', 'alert');
                 } else {
                   mainWindow.webContents.send('alert', 'alert');
