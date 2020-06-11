@@ -38,7 +38,7 @@ pinDir.writeSync(1)
 
 stepCounter = 0;
 
-var blinkInterval = setInterval(blinkLED, 10);
+var blinkInterval = setInterval(blinkLED, 1);
 
 // var subsidi = 3;
 
@@ -60,9 +60,6 @@ function blinkLED() {
   } else {
     pinPulse.writeSync(0);
   }
-  // if (stepCounter == 3200) {
-  //   clearInterval(blinkInterval);
-  // }
 }
 
 function endBlink() {
@@ -71,11 +68,11 @@ function endBlink() {
   pinPulse.writeSync(0);
   pinDir.writeSync(0);
   pinEnable.writeSync(0);
-  ledPin.writeSync(0);
+  // ledPin.writeSync(0);
   pinPulse.unexport();
   pinDir.unexport();
   pinEnable.unexport();
-  ledPin.unexport();
+  // ledPin.unexport();
 }
 
 setTimeout(endBlink, 50000);
