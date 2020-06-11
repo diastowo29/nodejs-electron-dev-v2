@@ -176,13 +176,14 @@ app.on('ready', () => {
                 newKartuData.push(tambahKartuBuf[i])
               }
               mfrc522.writeDataToBlock(1, newKartuData)
+              mainWindow.webContents.send('role-data', "user");
               mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
+              wait(3000);
+              mainWindow.webContents.send('general-info', '');
+              isTambahKartu = false;
             }
             console.log('this is not admin')
             mainWindow.webContents.send('role-data', "user");
-            wait(3000);
-            mainWindow.webContents.send('general-info', '');
-            isTambahKartu = false;
           }
         }
 
