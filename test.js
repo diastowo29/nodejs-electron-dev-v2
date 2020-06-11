@@ -317,7 +317,6 @@ function stepperGo () {
 
 function stepperOff () {
   console.log('end process')
-  clearInterval(blinkInterval);
   pinPulse.writeSync(0);
   pinDir.writeSync(0);
   pinEnable.writeSync(1);
