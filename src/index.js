@@ -118,7 +118,7 @@ app.on('ready', () => {
       //# Scan for cards
       let response = mfrc522.findCard();
       if (!response.status) {
-        // console.log("No Card");
+        console.log("No Card");
         return;
       }
       console.log("Card detected, CardType: " + response.bitSize);
@@ -130,13 +130,13 @@ app.on('ready', () => {
         return;
       }
       const uid = response.data;
-      console.log(
+      /*console.log(
         "Card read UID: %s %s %s %s",
         uid[0].toString(16),
         uid[1].toString(16),
         uid[2].toString(16),
         uid[3].toString(16)
-      );
+      );*/
 
       //# Select the scanned card
       const memoryCapacity = mfrc522.selectCard(uid);
@@ -177,7 +177,7 @@ app.on('ready', () => {
               }
               mfrc522.writeDataToBlock(1, newKartuData)
               mainWindow.webContents.send('general-info', 'Penambahan kartu berhasil!');
-              wait(1000);
+              wait(5000);
               mainWindow.webContents.send('general-info', '');
               isTambahKartu = false;
             }
@@ -199,7 +199,7 @@ app.on('ready', () => {
               }
               mfrc522.writeDataToBlock(4, newTambahKuotaData);
               mainWindow.webContents.send('general-info', 'Penambahan kuota berhasil!');
-              wait(1000);
+              wait(3000);
               mainWindow.webContents.send('general-info', '');
               isTambahKuota = false;
             } else if (isTambahKartu) {
@@ -239,7 +239,7 @@ app.on('ready', () => {
                   console.log("STEPPER ROTATING");
                   pinEnable.writeSync(0)
                   pinDir.writeSync(1)
-                  for (var i=0; i<(jatahSubs*200); i++) {
+                  for (var i=0; i<(jatahSubs*35); i++) {
                     pinPulse.writeSync(1);
                     wait(10)
                     pinPulse.writeSync(0)

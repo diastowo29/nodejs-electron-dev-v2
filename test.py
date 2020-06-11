@@ -19,7 +19,7 @@ def signal_handler(sig, frame):
     sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
-while True:
+for x in range(6*x)::
     pinPulse.on()
     print('hehe')
     sleep(1/1000)
